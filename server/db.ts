@@ -1,6 +1,6 @@
 import { eq, and, gte, lte, like, desc, asc, sum, count } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, expenses, expenseCategories, loans, loanPayments, budgets, notifications, notificationPreferences, categoryLearning, receipts } from "../drizzle/schema";
+import { InsertUser, users, expenses, expenseCategories, loans, loanPayments, budgets, notifications, notificationPreferences, categoryLearning, receipts, userCurrencies, exchangeRates } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -495,4 +495,94 @@ export async function getFinancialSummary(userId: number, startDate: Date, endDa
     totalLoans,
     netFinancialPosition: -totalExpenses - totalLoans,
   };
+}
+
+
+// ============= MULTI-CURRENCY QUERIES =============
+
+export async function getUserCurrency(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.select().from(userCurrencies).where(
+    eq(userCurrencies.userId, userId)
+  ).limit(1);
+  
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function upsertUserCurrency(data: {
+  userId: number;
+  baseCurrency: string;
+  displayCurrency: string;
+  autoConvert: boolean;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const existing = await getUserCurrency(data.userId);
+  
+  if (existing) {
+    return await db.update(userCurrencies).set({
+      baseCurrency: data.baseCurrency,
+      displayCurrency: data.displayCurrency,
+      autoConvert: data.autoConvert,
+      updatedAt: new Date(),
+    }).where(eq(userCurrencies.userId, data.userId));
+  } else {
+    return await db.insert(userCurrencies).values({
+      userId: data.userId,
+      baseCurrency: data.baseCurrency,
+      displayCurrency: data.displayCurrency,
+      autoConvert: data.autoConvert,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+  }
+}
+
+export async function getExchangeRateFromCache(fromCurrency: string, toCurrency: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.select().from(exchangeRates).where(
+    and(
+      eq(exchangeRates.fromCurrency, fromCurrency),
+      eq(exchangeRates.toCurrency, toCurrency)
+    )
+  ).orderBy(desc(exchangeRates.timestamp)).limit(1);
+  
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function cacheExchangeRate(fromCurrency: string, toCurrency: string, rate: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.insert(exchangeRates).values({
+    fromCurrency,
+    toCurrency,
+    rate: rate.toString(),
+    timestamp: new Date(),
+    source: "external_api",
+    createdAt: new Date(),
+  });
+}
+
+export async function getAllCurrencyPairs() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Get all unique currency pairs from expenses and loans
+  const pairs: Array<{ fromCurrency: string; toCurrency: string }> = [];
+  
+  // Get unique currencies from expenses
+  const expenseCurrencies = await db.select({
+    currency: expenses.currency,
+  }).from(expenses).where(
+    eq(expenses.currency, "USD") // Placeholder - would need distinct
+  );
+  
+  // For now, return empty array - in production, would aggregate from all transactions
+  return pairs;
 }

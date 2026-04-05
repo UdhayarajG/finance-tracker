@@ -15,6 +15,13 @@
       "when": 1775398819053,
       "tag": "0001_complete_layla_miller",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1775400356915,
+      "tag": "0002_demonic_stranger",
+      "breakpoints": true
     }
   ]
 }

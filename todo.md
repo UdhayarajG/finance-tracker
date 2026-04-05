@@ -62,3 +62,15 @@
 - [x] Final checkpoint creation
 - [x] Deployment preparation
 - [x] User documentation
+
+
+## Phase 10: Multi-Currency Support
+- [x] Update database schema with currency fields
+- [x] Implement exchange rate API integration
+- [x] Add currency conversion utilities
+- [x] Build currency selection UI
+- [ ] Update expense tracking for multi-currency
+- [ ] Update loan tracking for multi-currency
+- [ ] Update reports for multi-currency display
+- [ ] Add currency conversion in financial summary
+- [ ] Test multi-currency features

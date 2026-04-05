@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Loader2, LogOut } from "lucide-react";
 import { toast } from "sonner";
+import { CurrencySelector } from "@/components/CurrencySelector";
 
 export default function SettingsPage() {
   const { user, logout } = useAuth();
@@ -85,6 +86,22 @@ export default function SettingsPage() {
         <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
         <p className="text-muted-foreground mt-1">Manage your preferences and account</p>
       </div>
+
+      {/* Currency Settings */}
+      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
+        <CardHeader>
+          <CardTitle>Currency Settings</CardTitle>
+          <CardDescription>Set your preferred currency for transactions</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <CurrencySelector onCurrencyChange={(currency) => {
+            toast.success(`Base currency set to ${currency}`);
+          }} />
+          <p className="text-sm text-muted-foreground mt-4">
+            All expenses and loans will be converted to your base currency for reporting and analysis.
+          </p>
+        </CardContent>
+      </Card>
 
       {/* Account Section */}
       <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">

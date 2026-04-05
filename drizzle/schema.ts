@@ -19,6 +19,38 @@ export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
 /**
+ * User currency preferences and base currency
+ */
+export const userCurrencies = mysqlTable("user_currencies", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().unique(),
+  baseCurrency: varchar("baseCurrency", { length: 3 }).default("USD").notNull(), // ISO 4217 code
+  displayCurrency: varchar("displayCurrency", { length: 3 }).default("USD").notNull(), // Currency for display
+  autoConvert: boolean("autoConvert").default(true).notNull(), // Auto-convert to base currency
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type UserCurrency = typeof userCurrencies.$inferSelect;
+export type InsertUserCurrency = typeof userCurrencies.$inferInsert;
+
+/**
+ * Exchange rates cache for performance
+ */
+export const exchangeRates = mysqlTable("exchange_rates", {
+  id: int("id").autoincrement().primaryKey(),
+  fromCurrency: varchar("fromCurrency", { length: 3 }).notNull(),
+  toCurrency: varchar("toCurrency", { length: 3 }).notNull(),
+  rate: decimal("rate", { precision: 18, scale: 8 }).notNull(),
+  timestamp: timestamp("timestamp").notNull(),
+  source: varchar("source", { length: 50 }).default("external_api").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type ExchangeRate = typeof exchangeRates.$inferSelect;
+export type InsertExchangeRate = typeof exchangeRates.$inferInsert;
+
+/**
  * Expense categories with user-defined and system categories
  */
 export const expenseCategories = mysqlTable("expense_categories", {
@@ -44,6 +76,9 @@ export const expenses = mysqlTable("expenses", {
   userId: int("userId").notNull(),
   categoryId: int("categoryId").notNull(),
   amount: decimal("amount", { precision: 12, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).default("USD").notNull(), // ISO 4217 code
+  amountInBaseCurrency: decimal("amountInBaseCurrency", { precision: 12, scale: 2 }), // Converted to user's base currency
+  exchangeRate: decimal("exchangeRate", { precision: 18, scale: 8 }), // Rate used for conversion
   description: varchar("description", { length: 255 }).notNull(),
   date: timestamp("date").notNull(), // Transaction date
   merchant: varchar("merchant", { length: 255 }),
@@ -70,6 +105,7 @@ export const loans = mysqlTable("loans", {
   loanName: varchar("loanName", { length: 255 }).notNull(),
   loanType: mysqlEnum("loanType", ["personal", "auto", "home", "education", "credit_card", "other"]).default("personal").notNull(),
   principal: decimal("principal", { precision: 12, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).default("USD").notNull(), // ISO 4217 code
   interestRate: decimal("interestRate", { precision: 5, scale: 2 }).notNull(), // Annual percentage rate
   loanStartDate: timestamp("loanStartDate").notNull(),
   loanEndDate: timestamp("loanEndDate"), // Expected payoff date
@@ -117,6 +153,7 @@ export const budgets = mysqlTable("budgets", {
   categoryId: int("categoryId").notNull(),
   month: varchar("month", { length: 7 }).notNull(), // YYYY-MM format
   budgetAmount: decimal("budgetAmount", { precision: 12, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).default("USD").notNull(), // ISO 4217 code
   alertThreshold: int("alertThreshold").default(80).notNull(), // Percentage (0-100)
   notes: text("notes"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
