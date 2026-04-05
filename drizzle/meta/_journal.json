@@ -1,5 +1,20 @@
 {
   "version": "7",
   "dialect": "mysql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1775397561234,
+      "tag": "0000_illegal_slayback",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1775398819053,
+      "tag": "0001_complete_layla_miller",
+      "breakpoints": true
+    }
+  ]
 }

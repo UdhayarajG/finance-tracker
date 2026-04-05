@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -76,6 +78,12 @@
   --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.623 0.214 259.815);
+  
+  /* Finance-specific semantic colors */
+  --income: oklch(0.6 0.15 142);
+  --expense: oklch(0.577 0.245 27.325);
+  --loan: oklch(0.65 0.2 290);
+  --budget: oklch(0.65 0.18 50);
 }
 
 .dark {
@@ -111,6 +119,12 @@
   --sidebar-accent-foreground:  oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.488 0.243 264.376);
+  
+  /* Finance-specific semantic colors for dark mode */
+  --income: oklch(0.75 0.18 142);
+  --expense: oklch(0.704 0.191 22.216);
+  --loan: oklch(0.75 0.22 290);
+  --budget: oklch(0.75 0.2 50);
 }
 
 @layer base {
@@ -119,6 +133,11 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    @apply font-semibold tracking-tight;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -136,22 +155,12 @@
 @layer components {
   /**
    * Custom container utility that centers content and adds responsive padding.
-   *
-   * This overrides Tailwind's default container behavior to:
-   * - Auto-center content (mx-auto)
-   * - Add responsive horizontal padding
-   * - Set max-width for large screens
-   *
-   * Usage: <div className="container">...</div>
-   *
-   * For custom widths, use max-w-* utilities directly:
-   * <div className="max-w-6xl mx-auto px-4">...</div>
    */
   .container {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
+    padding-left: 1rem;
     padding-right: 1rem;
   }
 
@@ -160,18 +169,61 @@
     min-width: 0;
   }
 
+  /* Elegant card styling */
+  .card-elegant {
+    @apply bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+
+  /* Stat card for dashboard */
+  .stat-card {
+    @apply card-elegant p-6 flex flex-col justify-between;
+  }
+
+  /* Finance-specific color utilities */
+  .text-income {
+    color: hsl(var(--income));
+  }
+
+  .text-expense {
+    color: hsl(var(--expense));
+  }
+
+  .text-loan {
+    color: hsl(var(--loan));
+  }
+
+  .text-budget {
+    color: hsl(var(--budget));
+  }
+
+  .bg-income {
+    background-color: hsl(var(--income) / 0.1);
+  }
+
+  .bg-expense {
+    background-color: hsl(var(--expense) / 0.1);
+  }
+
+  .bg-loan {
+    background-color: hsl(var(--loan) / 0.1);
+  }
+
+  .bg-budget {
+    background-color: hsl(var(--budget) / 0.1);
+  }
+
   @media (min-width: 640px) {
     .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
+      padding-left: 1.5rem;
       padding-right: 1.5rem;
     }
   }
 
   @media (min-width: 1024px) {
     .container {
-      padding-left: 2rem; /* 32px - desktop padding */
+      padding-left: 2rem;
       padding-right: 2rem;
-      max-width: 1280px; /* Standard content width */
+      max-width: 1280px;
     }
   }
 }

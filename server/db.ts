@@ -1,11 +1,10 @@
-import { eq } from "drizzle-orm";
+import { eq, and, gte, lte, like, desc, asc, sum, count } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, expenses, expenseCategories, loans, loanPayments, budgets, notifications, notificationPreferences, categoryLearning, receipts } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
-// Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
@@ -85,8 +84,415 @@ export async function getUserByOpenId(openId: string) {
   }
 
   const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
-
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// ============= EXPENSE QUERIES =============
+
+export async function createExpense(data: typeof expenses.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(expenses).values(data);
+  return result;
+}
+
+export async function getExpensesByUser(userId: number, limit?: number, offset?: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  let query = db.select().from(expenses).where(eq(expenses.userId, userId)).orderBy(desc(expenses.date)) as any;
+  
+  if (limit) query = query.limit(limit);
+  if (offset) query = query.offset(offset);
+  
+  return await query;
+}
+
+export async function getExpenseById(expenseId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.select().from(expenses).where(
+    and(eq(expenses.id, expenseId), eq(expenses.userId, userId))
+  ).limit(1);
+  
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function updateExpense(expenseId: number, userId: number, data: Partial<typeof expenses.$inferInsert>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.update(expenses).set({
+    ...data,
+    updatedAt: new Date(),
+  }).where(
+    and(eq(expenses.id, expenseId), eq(expenses.userId, userId))
+  );
+}
+
+export async function deleteExpense(expenseId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.delete(expenses).where(
+    and(eq(expenses.id, expenseId), eq(expenses.userId, userId))
+  );
+}
+
+export async function getExpensesByDateRange(userId: number, startDate: Date, endDate: Date) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.select().from(expenses).where(
+    and(
+      eq(expenses.userId, userId),
+      gte(expenses.date, startDate),
+      lte(expenses.date, endDate)
+    )
+  ).orderBy(desc(expenses.date));
+}
+
+export async function searchExpenses(userId: number, query: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const searchTerm = `%${query}%`;
+  return await db.select().from(expenses).where(
+    and(
+      eq(expenses.userId, userId),
+      like(expenses.description, searchTerm)
+    )
+  ).orderBy(desc(expenses.date));
+}
+
+export async function getTotalExpensesByCategory(userId: number, startDate: Date, endDate: Date) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.select({
+    categoryId: expenses.categoryId,
+    total: sum(expenses.amount),
+    count: count(),
+  }).from(expenses).where(
+    and(
+      eq(expenses.userId, userId),
+      gte(expenses.date, startDate),
+      lte(expenses.date, endDate)
+    )
+  ).groupBy(expenses.categoryId);
+}
+
+// ============= CATEGORY QUERIES =============
+
+export async function createExpenseCategory(data: typeof expenseCategories.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return await db.insert(expenseCategories).values(data);
+}
+
+export async function getCategoriesByUser(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.select().from(expenseCategories).where(
+    eq(expenseCategories.userId, userId)
+  ).orderBy(asc(expenseCategories.name));
+}
+
+export async function getSystemCategories() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.select().from(expenseCategories).where(
+    eq(expenseCategories.isSystem, true)
+  ).orderBy(asc(expenseCategories.name));
+}
+
+export async function getCategoryById(categoryId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.select().from(expenseCategories).where(
+    eq(expenseCategories.id, categoryId)
+  ).limit(1);
+  
+  return result.length > 0 ? result[0] : null;
+}
+
+// ============= LOAN QUERIES =============
+
+export async function createLoan(data: typeof loans.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return await db.insert(loans).values(data);
+}
+
+export async function getLoansByUser(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.select().from(loans).where(
+    eq(loans.userId, userId)
+  ).orderBy(desc(loans.createdAt));
+}
+
+export async function getLoanById(loanId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.select().from(loans).where(
+    and(eq(loans.id, loanId), eq(loans.userId, userId))
+  ).limit(1);
+  
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function updateLoan(loanId: number, userId: number, data: Partial<typeof loans.$inferInsert>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.update(loans).set({
+    ...data,
+    updatedAt: new Date(),
+  }).where(
+    and(eq(loans.id, loanId), eq(loans.userId, userId))
+  );
+}
+
+export async function deleteLoan(loanId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.delete(loans).where(
+    and(eq(loans.id, loanId), eq(loans.userId, userId))
+  );
+}
+
+// ============= LOAN PAYMENT QUERIES =============
+
+export async function createLoanPayment(data: typeof loanPayments.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return await db.insert(loanPayments).values(data);
+}
+
+export async function getLoanPayments(loanId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.select().from(loanPayments).where(
+    eq(loanPayments.loanId, loanId)
+  ).orderBy(desc(loanPayments.paymentDate));
+}
+
+// ============= BUDGET QUERIES =============
+
+export async function createBudget(data: typeof budgets.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return await db.insert(budgets).values(data);
+}
+
+export async function getBudgetsByUser(userId: number, month?: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  let query = db.select().from(budgets).where(eq(budgets.userId, userId)) as any;
+  
+  if (month) {
+    query = query.where(eq(budgets.month, month));
+  }
+  
+  return await query.orderBy(asc(budgets.month));
+}
+
+export async function getBudgetById(budgetId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.select().from(budgets).where(
+    and(eq(budgets.id, budgetId), eq(budgets.userId, userId))
+  ).limit(1);
+  
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function updateBudget(budgetId: number, userId: number, data: Partial<typeof budgets.$inferInsert>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.update(budgets).set({
+    ...data,
+    updatedAt: new Date(),
+  }).where(
+    and(eq(budgets.id, budgetId), eq(budgets.userId, userId))
+  );
+}
+
+export async function deleteBudget(budgetId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.delete(budgets).where(
+    and(eq(budgets.id, budgetId), eq(budgets.userId, userId))
+  );
+}
+
+// ============= NOTIFICATION QUERIES =============
+
+export async function createNotification(data: typeof notifications.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return await db.insert(notifications).values(data);
+}
+
+export async function getNotificationsByUser(userId: number, limit = 50) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.select().from(notifications).where(
+    eq(notifications.userId, userId)
+  ).orderBy(desc(notifications.createdAt)).limit(limit);
+}
+
+export async function getUnreadNotifications(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.select().from(notifications).where(
+    and(eq(notifications.userId, userId), eq(notifications.isRead, false))
+  ).orderBy(desc(notifications.createdAt));
+}
+
+export async function markNotificationAsRead(notificationId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.update(notifications).set({
+    isRead: true,
+    readAt: new Date(),
+  }).where(eq(notifications.id, notificationId));
+}
+
+export async function getNotificationPreferences(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.select().from(notificationPreferences).where(
+    eq(notificationPreferences.userId, userId)
+  ).limit(1);
+  
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function createOrUpdateNotificationPreferences(data: typeof notificationPreferences.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.insert(notificationPreferences).values(data).onDuplicateKeyUpdate({
+    set: data,
+  });
+}
+
+// ============= CATEGORY LEARNING QUERIES =============
+
+export async function recordCategoryLearning(data: typeof categoryLearning.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return await db.insert(categoryLearning).values(data);
+}
+
+export async function getCategoryLearningByDescriptionAndMerchant(userId: number, description: string, merchant?: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  let query = db.select().from(categoryLearning).where(
+    and(
+      eq(categoryLearning.userId, userId),
+      like(categoryLearning.description, `%${description}%`)
+    )
+  ) as any;
+  
+  if (merchant) {
+    query = query.where(like(categoryLearning.merchant, `%${merchant}%`));
+  }
+  
+  return await query.orderBy(desc(categoryLearning.confidence));
+}
+
+// ============= RECEIPT QUERIES =============
+
+export async function createReceipt(data: typeof receipts.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return await db.insert(receipts).values(data);
+}
+
+export async function getReceiptsByUser(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.select().from(receipts).where(
+    eq(receipts.userId, userId)
+  ).orderBy(desc(receipts.createdAt));
+}
+
+export async function getReceiptById(receiptId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.select().from(receipts).where(
+    and(eq(receipts.id, receiptId), eq(receipts.userId, userId))
+  ).limit(1);
+  
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function updateReceipt(receiptId: number, data: Partial<typeof receipts.$inferInsert>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.update(receipts).set({
+    ...data,
+    updatedAt: new Date(),
+  }).where(eq(receipts.id, receiptId));
+}
+
+// ============= FINANCIAL SUMMARY QUERIES =============
+
+export async function getFinancialSummary(userId: number, startDate: Date, endDate: Date) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Total expenses
+  const expenseResult = await db.select({
+    total: sum(expenses.amount),
+  }).from(expenses).where(
+    and(
+      eq(expenses.userId, userId),
+      gte(expenses.date, startDate),
+      lte(expenses.date, endDate)
+    )
+  );
+  
+  const totalExpenses = expenseResult[0]?.total ? parseFloat(expenseResult[0].total.toString()) : 0;
+  
+  // Total loans
+  const userLoans = await db.select({
+    total: sum(loans.remainingBalance),
+  }).from(loans).where(
+    and(
+      eq(loans.userId, userId),
+      eq(loans.status, "active")
+    )
+  );
+  
+  const totalLoans = userLoans[0]?.total ? parseFloat(userLoans[0].total.toString()) : 0;
+  
+  return {
+    totalExpenses,
+    totalLoans,
+    netFinancialPosition: -totalExpenses - totalLoans,
+  };
+}
