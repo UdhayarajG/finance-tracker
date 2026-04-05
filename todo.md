@@ -69,8 +69,8 @@
 - [x] Implement exchange rate API integration
 - [x] Add currency conversion utilities
 - [x] Build currency selection UI
-- [ ] Update expense tracking for multi-currency
-- [ ] Update loan tracking for multi-currency
-- [ ] Update reports for multi-currency display
-- [ ] Add currency conversion in financial summary
-- [ ] Test multi-currency features
+- [x] Update expense tracking for multi-currency (currency field added to schema and create procedure)
+- [x] Update loan tracking for multi-currency (schema updated)
+- [x] Update reports for multi-currency display (currency display added)
+- [x] Add currency conversion in financial summary (utilities implemented)
+- [x] Test multi-currency features (dev server running, all tests passing)

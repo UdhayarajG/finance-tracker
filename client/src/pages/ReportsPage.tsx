@@ -28,6 +28,7 @@ const COLORS = ["#3B82F6", "#8B5CF6", "#EC4899", "#F59E0B", "#10B981", "#06B6D4"
 export default function ReportsPage() {
   const { user } = useAuth();
   const [reportType, setReportType] = useState("monthly");
+  const [displayCurrency, setDisplayCurrency] = useState("USD");
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
