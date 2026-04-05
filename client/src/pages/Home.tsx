@@ -83,7 +83,7 @@ export default function Home() {
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Expenses */}
-        <Card className="card-elegant">
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center justify-between">
               <span>Total Expenses</span>
@@ -102,7 +102,7 @@ export default function Home() {
         </Card>
 
         {/* Active Loans */}
-        <Card className="card-elegant">
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center justify-between">
               <span>Active Loans</span>
@@ -121,7 +121,7 @@ export default function Home() {
         </Card>
 
         {/* Net Position */}
-        <Card className="card-elegant">
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center justify-between">
               <span>Net Position</span>
@@ -140,7 +140,7 @@ export default function Home() {
         </Card>
 
         {/* Quick Actions */}
-        <Card className="card-elegant flex flex-col justify-between">
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col justify-between">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium">Quick Actions</CardTitle>
           </CardHeader>
@@ -166,7 +166,7 @@ export default function Home() {
       </div>
 
       {/* Recent Transactions */}
-      <Card className="card-elegant">
+      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
         <CardHeader>
           <CardTitle>Recent Transactions</CardTitle>
           <CardDescription>Your latest expenses</CardDescription>
@@ -212,7 +212,7 @@ export default function Home() {
 
       {/* Quick Links */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="card-elegant cursor-pointer hover:border-primary transition-colors" onClick={() => navigate("/expenses") as any}>
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer hover:border-primary transition-colors" onClick={() => navigate("/expenses") as any}>
           <CardHeader>
             <CardTitle className="text-base">Manage Expenses</CardTitle>
           </CardHeader>
@@ -221,7 +221,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="card-elegant cursor-pointer hover:border-primary transition-colors" onClick={() => navigate("/loans") as any}>
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer hover:border-primary transition-colors" onClick={() => navigate("/loans") as any}>
           <CardHeader>
             <CardTitle className="text-base">Manage Loans</CardTitle>
           </CardHeader>
@@ -230,7 +230,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="card-elegant cursor-pointer hover:border-primary transition-colors" onClick={() => navigate("/reports") as any}>
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer hover:border-primary transition-colors" onClick={() => navigate("/reports") as any}>
           <CardHeader>
             <CardTitle className="text-base">View Reports</CardTitle>
           </CardHeader>

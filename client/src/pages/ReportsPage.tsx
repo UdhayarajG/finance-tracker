@@ -123,7 +123,7 @@ export default function ReportsPage() {
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="card-elegant">
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground">Total Expenses</p>
             <p className="text-2xl font-bold text-expense">${totalExpenses.toFixed(2)}</p>
@@ -131,7 +131,7 @@ export default function ReportsPage() {
           </CardContent>
         </Card>
 
-        <Card className="card-elegant">
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground">Average Daily</p>
             <p className="text-2xl font-bold text-primary">${avgDailySpending.toFixed(2)}</p>
@@ -139,7 +139,7 @@ export default function ReportsPage() {
           </CardContent>
         </Card>
 
-        <Card className="card-elegant">
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground">Max Daily Spending</p>
             <p className="text-2xl font-bold text-warning">${maxDailySpending.toFixed(2)}</p>
@@ -147,7 +147,7 @@ export default function ReportsPage() {
           </CardContent>
         </Card>
 
-        <Card className="card-elegant">
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground">Total Loan Balance</p>
             <p className="text-2xl font-bold text-loan">${totalLoanBalance.toFixed(2)}</p>
@@ -164,7 +164,7 @@ export default function ReportsPage() {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Pie Chart - Category Breakdown */}
-          <Card className="card-elegant">
+          <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
             <CardHeader>
               <CardTitle>Spending by Category</CardTitle>
               <CardDescription>Breakdown of expenses by category</CardDescription>
@@ -199,7 +199,7 @@ export default function ReportsPage() {
           </Card>
 
           {/* Line Chart - Daily Spending Trend */}
-          <Card className="card-elegant">
+          <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
             <CardHeader>
               <CardTitle>Daily Spending Trend</CardTitle>
               <CardDescription>Your spending pattern throughout the month</CardDescription>
@@ -232,7 +232,7 @@ export default function ReportsPage() {
       )}
 
       {/* Category Details Table */}
-      <Card className="card-elegant">
+      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
         <CardHeader>
           <CardTitle>Category Details</CardTitle>
           <CardDescription>Detailed breakdown by category</CardDescription>
@@ -271,7 +271,7 @@ export default function ReportsPage() {
       </Card>
 
       {/* Summary */}
-      <Card className="card-elegant bg-gradient-to-br from-primary/5 to-accent/5">
+      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-primary/5 to-accent/5">
         <CardHeader>
           <CardTitle>Financial Summary</CardTitle>
         </CardHeader>

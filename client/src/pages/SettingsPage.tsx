@@ -87,7 +87,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Account Section */}
-      <Card className="card-elegant">
+      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
         <CardHeader>
           <CardTitle>Account Information</CardTitle>
           <CardDescription>Your account details</CardDescription>
@@ -109,7 +109,7 @@ export default function SettingsPage() {
       </Card>
 
       {/* Notification Preferences */}
-      <Card className="card-elegant">
+      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
         <CardHeader>
           <CardTitle>Notification Preferences</CardTitle>
           <CardDescription>Control when you receive notifications</CardDescription>
@@ -249,7 +249,7 @@ export default function SettingsPage() {
       </Card>
 
       {/* Account Actions */}
-      <Card className="card-elegant border-destructive/20 bg-destructive/5">
+      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200 border-destructive/20 bg-destructive/5">
         <CardHeader>
           <CardTitle className="text-destructive">Account Actions</CardTitle>
           <CardDescription>Manage your account</CardDescription>
@@ -268,7 +268,7 @@ export default function SettingsPage() {
       </Card>
 
       {/* Help Section */}
-      <Card className="card-elegant">
+      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
         <CardHeader>
           <CardTitle>Help & Support</CardTitle>
           <CardDescription>Need help?</CardDescription>

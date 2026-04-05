@@ -215,13 +215,13 @@ export default function BudgetsPage() {
 
       {/* Summary */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="card-elegant">
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground">Total Budgeted</p>
             <p className="text-2xl font-bold text-budget">${totalBudgeted.toFixed(2)}</p>
           </CardContent>
         </Card>
-        <Card className="card-elegant">
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground">Total Spent</p>
             <p className="text-2xl font-bold text-expense">${totalSpent.toFixed(2)}</p>
@@ -230,7 +230,7 @@ export default function BudgetsPage() {
       </div>
 
       {/* Budgets List */}
-      <Card className="card-elegant">
+      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
         <CardHeader>
           <CardTitle>Budget Tracking</CardTitle>
           <CardDescription>{budgets?.length || 0} budgets for {selectedMonth}</CardDescription>

@@ -245,7 +245,7 @@ export default function ExpensesPage() {
             className="pl-10"
           />
         </div>
-        <Card className="card-elegant">
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground">Total Expenses</p>
             <p className="text-2xl font-bold text-expense">${totalExpenses.toFixed(2)}</p>
@@ -254,7 +254,7 @@ export default function ExpensesPage() {
       </div>
 
       {/* Expenses List */}
-      <Card className="card-elegant">
+      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
         <CardHeader>
           <CardTitle>Expense History</CardTitle>
           <CardDescription>{displayExpenses?.length || 0} transactions</CardDescription>

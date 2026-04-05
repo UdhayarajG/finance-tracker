@@ -169,14 +169,9 @@
     min-width: 0;
   }
 
-  /* Elegant card styling */
-  .card-elegant {
-    @apply bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200;
-  }
-
   /* Stat card for dashboard */
   .stat-card {
-    @apply card-elegant p-6 flex flex-col justify-between;
+    @apply bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200 p-6 flex flex-col justify-between;
   }
 
   /* Finance-specific color utilities */

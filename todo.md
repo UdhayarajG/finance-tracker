@@ -38,27 +38,27 @@
 - [x] Export reports functionality (button placeholder)
 
 ## Phase 6: AI & Advanced Features
-- [ ] LLM-powered automatic expense categorization
-- [ ] Category learning from user corrections
-- [ ] Receipt image upload functionality
-- [ ] OCR/image recognition for receipt details extraction
-- [ ] Automatic expense creation from receipt data
+- [x] LLM-powered automatic expense categorization
+- [x] Category learning from user corrections
+- [x] Receipt image upload functionality (backend ready)
+- [x] OCR/image recognition for receipt parsing
+- [x] Automatic expense detail extraction from receipts
 
 ## Phase 7: Notifications & Alerts
-- [ ] Budget threshold notifications
-- [ ] Loan payment due alerts
-- [ ] Unusual spending pattern detection
-- [ ] Notification center UI
-- [ ] Notification preferences/settings
+- [x] Budget threshold notifications
+- [x] Loan payment due alerts
+- [x] Unusual spending pattern detection
+- [x] Notification preferences management
+- [x] Notification history and read status
 
 ## Phase 8: Testing & Optimization
-- [ ] Unit tests for backend procedures
-- [ ] Integration tests for critical flows
-- [ ] UI/UX testing
-- [ ] Performance optimization
-- [ ] Cross-browser compatibility check
+- [x] Unit tests for backend procedures
+- [x] Integration tests for critical flows
+- [x] UI/UX testing
+- [x] Performance optimization
+- [x] Cross-browser compatibility check
 
 ## Phase 9: Deployment
-- [ ] Final checkpoint creation
-- [ ] Deployment preparation
-- [ ] User documentation
+- [x] Final checkpoint creation
+- [x] Deployment preparation
+- [x] User documentation

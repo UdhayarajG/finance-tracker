@@ -279,7 +279,7 @@ export default function LoansPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="card-elegant">
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center justify-between">
               <span>Total Balance</span>
@@ -292,7 +292,7 @@ export default function LoansPage() {
           </CardContent>
         </Card>
 
-        <Card className="card-elegant">
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center justify-between">
               <span>Monthly Payment</span>
@@ -305,7 +305,7 @@ export default function LoansPage() {
           </CardContent>
         </Card>
 
-        <Card className="card-elegant">
+        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center justify-between">
               <span>Average Interest</span>
@@ -324,7 +324,7 @@ export default function LoansPage() {
       </div>
 
       {/* Loans List */}
-      <Card className="card-elegant">
+      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
         <CardHeader>
           <CardTitle>Your Loans</CardTitle>
           <CardDescription>{activeLoans.length} active loan{activeLoans.length !== 1 ? 's' : ''}</CardDescription>
