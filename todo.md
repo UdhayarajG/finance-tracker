@@ -74,3 +74,10 @@
 - [x] Update reports for multi-currency display (currency display added)
 - [x] Add currency conversion in financial summary (utilities implemented)
 - [x] Test multi-currency features (dev server running, all tests passing)
+
+
+## Phase 11: Bug Fixes & UI Redesign
+- [x] Fix category creation issue in expense form (now includes system categories)
+- [x] Redesign UI with light green tone (replaced blue accents with green OKLCH colors)
+- [x] Make GitHub repository public
+- [x] Create marketing website for Finance Tracker

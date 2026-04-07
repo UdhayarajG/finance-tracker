@@ -195,9 +195,15 @@ export async function getCategoriesByUser(userId: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   
-  return await db.select().from(expenseCategories).where(
+  const userCategories = await db.select().from(expenseCategories).where(
     eq(expenseCategories.userId, userId)
   ).orderBy(asc(expenseCategories.name));
+  
+  const systemCategories = await db.select().from(expenseCategories).where(
+    eq(expenseCategories.isSystem, true)
+  ).orderBy(asc(expenseCategories.name));
+  
+  return [...systemCategories, ...userCategories];
 }
 
 export async function getSystemCategories() {
