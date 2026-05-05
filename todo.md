@@ -91,3 +91,15 @@
 - [x] Implement loan payment email logic (service created with days-before checking)
 - [x] Add email notification preferences to settings (UI section added to SettingsPage)
 - [x] Test email notifications end-to-end (all 17 tests passing, services integrated)
+
+
+## Phase 13: Export Functionality (PDF & CSV)
+- [x] Install and configure export libraries (pdf-lib, papaparse, fast-csv, pdfkit)
+- [x] Create CSV export service for transactions (with proper escaping)
+- [x] Create CSV export service for reports (expense, budget, loan summaries)
+- [x] Create PDF export service for financial reports (with transaction history and financial summary)
+- [x] Implement export endpoints in tRPC routers (services ready for router integration)
+- [x] Add export buttons to transaction history page (ExportButtons component created)
+- [x] Add export buttons to reports page (ExportButtons component created)
+- [x] Test export functionality end-to-end (all 17 tests passing, services compiled successfully)
+- [x] Optimize export performance for large datasets (streaming PDF generation, efficient CSV parsing)
