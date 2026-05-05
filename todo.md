@@ -81,3 +81,13 @@
 - [x] Redesign UI with light green tone (replaced blue accents with green OKLCH colors)
 - [x] Make GitHub repository public
 - [x] Create marketing website for Finance Tracker
+
+
+## Phase 12: Email Notifications Integration
+- [x] Set up email service (Nodemailer with multiple provider support)
+- [x] Create email templates for budget overages (HTML template with styling)
+- [x] Create email templates for loan payment reminders (HTML template with styling)
+- [x] Implement budget overage email logic (service created with threshold checking)
+- [x] Implement loan payment email logic (service created with days-before checking)
+- [x] Add email notification preferences to settings (UI section added to SettingsPage)
+- [x] Test email notifications end-to-end (all 17 tests passing, services integrated)
