@@ -10,11 +10,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Plus, Trash2, Edit2, Search, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { ExportButtons, downloadFile } from "@/components/ExportButtons";
 
 export default function ExpensesPage() {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isExporting, setIsExporting] = useState(false);
   const [formData, setFormData] = useState({
     description: "",
     amount: "",
@@ -75,7 +77,50 @@ export default function ExpensesPage() {
     { enabled: !!searchQuery && !!user }
   );
 
+  // Export queries
+  const exportTransactionCSV = trpc.exports.transactionCSV.useQuery(
+    { startDate: undefined, endDate: undefined },
+    { enabled: false }
+  );
+  const exportTransactionPDF = trpc.exports.transactionHistoryPDF.useQuery(
+    { startDate: undefined, endDate: undefined },
+    { enabled: false }
+  );
+
   const displayExpenses = searchQuery ? searchResults : expenses;
+
+  const handleExportCSV = async () => {
+    setIsExporting(true);
+    try {
+      const result = await exportTransactionCSV.refetch();
+      if (result.data?.csv) {
+        downloadFile(result.data.csv, result.data.filename, 'text/csv');
+      }
+    } catch (error) {
+      console.error('Export error:', error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleExportPDF = async () => {
+    setIsExporting(true);
+    try {
+      const result = await exportTransactionPDF.refetch();
+      if (result.data?.pdf) {
+        const binaryString = atob(result.data.pdf);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        downloadFile(new Blob([bytes], { type: 'application/pdf' }), result.data.filename, 'application/pdf');
+      }
+    } catch (error) {
+      console.error('Export error:', error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,14 +157,21 @@ export default function ExpensesPage() {
           <h1 className="text-3xl font-bold tracking-tight">Expenses</h1>
           <p className="text-muted-foreground mt-1">Track and manage your daily expenses</p>
         </div>
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              Add Expense
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+        <div className="flex gap-2">
+          <ExportButtons
+            onExportCSV={handleExportCSV}
+            onExportPDF={handleExportPDF}
+            isLoading={isExporting}
+            label="Export"
+          />
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                Add Expense
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>Add New Expense</DialogTitle>
               <DialogDescription>Record a new expense transaction</DialogDescription>
@@ -230,8 +282,9 @@ export default function ExpensesPage() {
                 )}
               </Button>
             </form>
-          </DialogContent>
-        </Dialog>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Search and Stats */}

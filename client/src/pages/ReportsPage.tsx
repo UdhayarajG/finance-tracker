@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2, Download } from "lucide-react";
+import { ExportButtons, downloadFile } from "@/components/ExportButtons";
 import {
   PieChart,
   Pie,
@@ -29,6 +30,7 @@ export default function ReportsPage() {
   const { user } = useAuth();
   const [reportType, setReportType] = useState("monthly");
   const [displayCurrency, setDisplayCurrency] = useState("USD");
+  const [isExporting, setIsExporting] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
@@ -63,6 +65,49 @@ export default function ReportsPage() {
     undefined as any,
     { enabled: !!user }
   );
+
+  // Export queries
+  const exportExpenseReportCSV = trpc.exports.expenseReportCSV.useQuery(
+    { month: selectedMonth },
+    { enabled: false }
+  );
+  const exportFinancialReportPDF = trpc.exports.financialReportPDF.useQuery(
+    { month: selectedMonth },
+    { enabled: false }
+  );
+
+  const handleExportCSV = async () => {
+    setIsExporting(true);
+    try {
+      const result = await exportExpenseReportCSV.refetch();
+      if (result.data?.csv) {
+        downloadFile(result.data.csv, result.data.filename, 'text/csv');
+      }
+    } catch (error) {
+      console.error('Export error:', error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleExportPDF = async () => {
+    setIsExporting(true);
+    try {
+      const result = await exportFinancialReportPDF.refetch();
+      if (result.data?.pdf) {
+        const binaryString = atob(result.data.pdf);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        downloadFile(new Blob([bytes], { type: 'application/pdf' }), result.data.filename, 'application/pdf');
+      }
+    } catch (error) {
+      console.error('Export error:', error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   // Prepare pie chart data
   const pieData = categoryBreakdown?.map((item: any) => {
@@ -100,9 +145,17 @@ export default function ReportsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Financial Reports</h1>
-        <p className="text-muted-foreground mt-1">Analyze your spending patterns and financial trends</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Financial Reports</h1>
+          <p className="text-muted-foreground mt-1">Analyze your spending patterns and financial trends</p>
+        </div>
+        <ExportButtons
+          onExportCSV={handleExportCSV}
+          onExportPDF={handleExportPDF}
+          isLoading={isExporting}
+          label="Export"
+        />
       </div>
 
       {/* Controls */}

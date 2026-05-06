@@ -4,6 +4,8 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
+import { generateTransactionCSV, generateExpenseReportCSV, generateLoanSummaryCSV, generateBudgetReportCSV } from "./csv-export-service";
+import { generateFinancialReportPDF, generateTransactionHistoryPDF } from "./pdf-export-service";
 import { TRPCError } from "@trpc/server";
 
 export const appRouter = router({
@@ -396,6 +398,53 @@ export const appRouter = router({
       }))
       .query(async ({ ctx, input }) => {
         return await db.getFinancialSummary(ctx.user.id, input.startDate, input.endDate);
+      }),
+  }),
+  // ============= EXPORT PROCEDURES =============
+  exports: router({
+    transactionCSV: protectedProcedure
+      .input(z.object({
+        startDate: z.date().optional(),
+        endDate: z.date().optional(),
+      }))
+      .query(async ({ ctx, input }) => {
+        const csv = await generateTransactionCSV(ctx.user.id, input.startDate, input.endDate);
+        return { csv, filename: `transactions-${new Date().toISOString().split('T')[0]}.csv` };
+      }),
+    expenseReportCSV: protectedProcedure
+      .input(z.object({
+        month: z.string().optional(),
+      }))
+      .query(async ({ ctx, input }) => {
+        const csv = await generateExpenseReportCSV(ctx.user.id, input.month);
+        return { csv, filename: `expense-report-${input.month || new Date().toISOString().split('T')[0]}.csv` };
+      }),
+    loanSummaryCSV: protectedProcedure
+      .query(async ({ ctx }) => {
+        const csv = await generateLoanSummaryCSV(ctx.user.id);
+        return { csv, filename: `loan-summary-${new Date().toISOString().split('T')[0]}.csv` };
+      }),
+    budgetReportCSV: protectedProcedure
+      .query(async ({ ctx }) => {
+        const csv = await generateBudgetReportCSV(ctx.user.id);
+        return { csv, filename: `budget-report-${new Date().toISOString().split('T')[0]}.csv` };
+      }),
+    financialReportPDF: protectedProcedure
+      .input(z.object({
+        month: z.string().optional(),
+      }))
+      .query(async ({ ctx, input }) => {
+        const pdfBuffer = await generateFinancialReportPDF(ctx.user.id, input.month);
+        return { pdf: pdfBuffer.toString('base64'), filename: `financial-report-${input.month || new Date().toISOString().split('T')[0]}.pdf` };
+      }),
+    transactionHistoryPDF: protectedProcedure
+      .input(z.object({
+        startDate: z.date().optional(),
+        endDate: z.date().optional(),
+      }))
+      .query(async ({ ctx, input }) => {
+        const pdfBuffer = await generateTransactionHistoryPDF(ctx.user.id, input.startDate, input.endDate);
+        return { pdf: pdfBuffer.toString('base64'), filename: `transaction-history-${new Date().toISOString().split('T')[0]}.pdf` };
       }),
   }),
 });
