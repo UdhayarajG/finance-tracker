@@ -144,6 +144,60 @@ export const appRouter = router({
       .query(async () => {
         return await db.getSystemCategories();
       }),
+
+    createCustom: protectedProcedure
+      .input(z.object({
+        name: z.string().min(1),
+        description: z.string().optional(),
+        color: z.string().optional(),
+        icon: z.string().optional(),
+        monthlyBudgetLimit: z.number().optional(),
+        budgetAlertThreshold: z.number().min(0).max(100).default(80),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        return await db.createCustomCategory({
+          userId: ctx.user.id,
+          ...input,
+        });
+      }),
+
+    updateCustom: protectedProcedure
+      .input(z.object({
+        categoryId: z.number(),
+        name: z.string().optional(),
+        description: z.string().optional(),
+        color: z.string().optional(),
+        icon: z.string().optional(),
+        monthlyBudgetLimit: z.number().optional(),
+        budgetAlertThreshold: z.number().min(0).max(100).optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        return await db.updateCustomCategory(input.categoryId, ctx.user.id, {
+          name: input.name,
+          description: input.description,
+          color: input.color,
+          icon: input.icon,
+          monthlyBudgetLimit: input.monthlyBudgetLimit,
+          budgetAlertThreshold: input.budgetAlertThreshold,
+        });
+      }),
+
+    deleteCustom: protectedProcedure
+      .input(z.object({
+        categoryId: z.number(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        return await db.deleteCustomCategory(input.categoryId, ctx.user.id);
+      }),
+
+    getBudgetStatus: protectedProcedure
+      .input(z.object({
+        categoryId: z.number(),
+        month: z.string(),
+      }))
+      .query(async ({ ctx, input }) => {
+        return await db.getCategoryBudgetStatus(input.categoryId, ctx.user.id, input.month);
+      }),
   }),
 
   // ============= LOAN PROCEDURES =============

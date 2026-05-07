@@ -9,6 +9,7 @@ import DashboardLayout from "./components/DashboardLayout";
 import ExpensesPage from "./pages/ExpensesPage";
 import LoansPage from "./pages/LoansPage";
 import BudgetsPage from "./pages/BudgetsPage";
+import CategoriesPage from "./pages/CategoriesPage";
 import ReportsPage from "./pages/ReportsPage";
 import SettingsPage from "./pages/SettingsPage";
 
@@ -41,6 +42,13 @@ function Router() {
         {() => (
           <DashboardLayout>
             <BudgetsPage />
+          </DashboardLayout>
+        )}
+      </Route>
+      <Route path={"/categories"}>
+        {() => (
+          <DashboardLayout>
+            <CategoriesPage />
           </DashboardLayout>
         )}
       </Route>

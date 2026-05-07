@@ -34,7 +34,7 @@ export default function ExpensesPage() {
   );
 
   // Fetch categories
-  const { data: categories, isLoading: categoriesLoading } = trpc.categories.list.useQuery(
+  const { data: categories, isLoading: categoriesLoading, isError: categoriesError } = trpc.categories.list.useQuery(
     undefined as any,
     { enabled: !!user }
   );
@@ -222,6 +222,8 @@ export default function ExpensesPage() {
                   <SelectContent>
                     {categoriesLoading ? (
                       <div className="p-2 text-sm text-muted-foreground">Loading categories...</div>
+                    ) : categoriesError ? (
+                      <div className="p-2 text-sm text-destructive">Failed to load categories</div>
                     ) : (
                       categories?.map((cat: any) => (
                         <SelectItem key={cat.id} value={cat.id.toString()}>

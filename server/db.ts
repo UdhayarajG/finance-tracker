@@ -592,3 +592,124 @@ export async function getAllCurrencyPairs() {
   // For now, return empty array - in production, would aggregate from all transactions
   return pairs;
 }
+
+
+// ============= CUSTOM CATEGORY QUERIES =============
+export async function createCustomCategory(data: {
+  userId: number;
+  name: string;
+  description?: string;
+  color?: string;
+  icon?: string;
+  monthlyBudgetLimit?: number | null;
+  budgetAlertThreshold?: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(expenseCategories).values({
+    userId: data.userId,
+    name: data.name,
+    description: data.description || null,
+    color: data.color || "#10B981",
+    icon: data.icon || "Tag",
+    isSystem: false,
+    monthlyBudgetLimit: data.monthlyBudgetLimit ? parseFloat(data.monthlyBudgetLimit.toString()) : undefined,
+    budgetAlertThreshold: data.budgetAlertThreshold || 80,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  } as any);
+  
+  return result;
+}
+
+export async function updateCustomCategory(categoryId: number, userId: number, data: {
+  name?: string;
+  description?: string;
+  color?: string;
+  icon?: string;
+  monthlyBudgetLimit?: number | null;
+  budgetAlertThreshold?: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const updateData: any = {
+    updatedAt: new Date(),
+  };
+  
+  if (data.name) updateData.name = data.name;
+  if (data.description !== undefined) updateData.description = data.description;
+  if (data.color) updateData.color = data.color;
+  if (data.icon) updateData.icon = data.icon;
+  if (data.monthlyBudgetLimit !== undefined) updateData.monthlyBudgetLimit = data.monthlyBudgetLimit ? parseFloat(data.monthlyBudgetLimit.toString()) : null;
+  if (data.budgetAlertThreshold !== undefined) updateData.budgetAlertThreshold = data.budgetAlertThreshold;
+  
+  return await db.update(expenseCategories)
+    .set(updateData as any)
+    .where(and(eq(expenseCategories.id, categoryId), eq(expenseCategories.userId, userId)));
+}
+
+export async function deleteCustomCategory(categoryId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.delete(expenseCategories)
+    .where(and(eq(expenseCategories.id, categoryId), eq(expenseCategories.userId, userId)));
+}
+
+export async function getUserCustomCategories(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.select().from(expenseCategories)
+    .where(and(eq(expenseCategories.userId, userId), eq(expenseCategories.isSystem, false)));
+}
+
+export async function getCategoryBudgetStatus(categoryId: number, userId: number, month: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Get category with budget limit
+  const category = await db.select().from(expenseCategories)
+    .where(and(eq(expenseCategories.id, categoryId), eq(expenseCategories.userId, userId)))
+    .limit(1);
+  
+  if (!category || !category[0]) return null;
+  
+  const cat = category[0];
+  if (!cat.monthlyBudgetLimit) return null;
+  
+  // Get expenses for this category in the month
+  const startDate = new Date(`${month}-01`);
+  const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+  
+  const monthExpenses = await db.select().from(expenses)
+    .where(
+      and(
+        eq(expenses.userId, userId),
+        eq(expenses.categoryId, categoryId)
+      )
+    );
+  
+  const filtered = monthExpenses.filter(exp => {
+    const expDate = new Date(exp.date);
+    return expDate >= startDate && expDate <= endDate;
+  });
+  
+  const totalSpent = filtered.reduce((sum, exp) => sum + parseFloat(exp.amount.toString()), 0);
+  const budgetLimit = parseFloat(cat.monthlyBudgetLimit.toString());
+  const percentageUsed = (totalSpent / budgetLimit) * 100;
+  
+  return {
+    categoryId,
+    categoryName: cat.name,
+    budgetLimit,
+    totalSpent,
+    remaining: budgetLimit - totalSpent,
+    percentageUsed,
+    alertThreshold: cat.budgetAlertThreshold || 80,
+    isOverBudget: percentageUsed > 100,
+    shouldAlert: percentageUsed >= (cat.budgetAlertThreshold || 80),
+  };
+}

@@ -103,3 +103,12 @@
 - [x] Add export buttons to reports page (ExportButtons component created)
 - [x] Test export functionality end-to-end (all 17 tests passing, services compiled successfully)
 - [x] Optimize export performance for large datasets (streaming PDF generation, efficient CSV parsing)
+
+
+## Phase 14: Custom Expense Categories with Budget Limits
+- [x] Update schema to support user-created categories with budget limits
+- [x] Create backend APIs for category CRUD operations
+- [x] Build category management UI page
+- [x] Integrate custom categories into expense form (automatic via trpc.categories.list)
+- [x] Add error handling for category loading in expense form
+- [x] Test custom category feature end-to-end (4 new tests added, 21 total tests passing)

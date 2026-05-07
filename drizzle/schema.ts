@@ -61,6 +61,8 @@ export const expenseCategories = mysqlTable("expense_categories", {
   color: varchar("color", { length: 7 }).default("#3B82F6").notNull(), // Hex color
   icon: varchar("icon", { length: 50 }).default("Tag").notNull(), // Lucide icon name
   isSystem: boolean("isSystem").default(false).notNull(), // True for default categories
+  monthlyBudgetLimit: decimal("monthlyBudgetLimit", { precision: 12, scale: 2 }), // Optional monthly limit
+  budgetAlertThreshold: int("budgetAlertThreshold").default(80), // Percentage (0-100) for alerts
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
