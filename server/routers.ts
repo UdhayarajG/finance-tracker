@@ -6,6 +6,7 @@ import { z } from "zod";
 import * as db from "./db";
 import { generateTransactionCSV, generateExpenseReportCSV, generateLoanSummaryCSV, generateBudgetReportCSV } from "./csv-export-service";
 import { generateFinancialReportPDF, generateTransactionHistoryPDF } from "./pdf-export-service";
+import { checkCategoryBudgetOnExpenseCreation } from "./category-budget-alert-service";
 import { TRPCError } from "@trpc/server";
 
 export const appRouter = router({
@@ -46,6 +47,13 @@ export const appRouter = router({
           notes: input.notes,
           aiCategorized: input.aiCategorized,
         });
+
+        checkCategoryBudgetOnExpenseCreation(ctx.user.id, input.categoryId, input.date).catch(
+          (err) => {
+            console.error("[Expense Creation] Budget alert check failed:", err);
+          }
+        );
+
         return result;
       }),
 

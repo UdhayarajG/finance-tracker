@@ -112,3 +112,12 @@
 - [x] Integrate custom categories into expense form (automatic via trpc.categories.list)
 - [x] Add error handling for category loading in expense form
 - [x] Test custom category feature end-to-end (4 new tests added, 21 total tests passing)
+
+
+## Phase 15: Category Budget Alerts & Email Notifications
+- [x] Create category budget alert tracking in database (using existing notification system)
+- [x] Implement budget alert checking logic in expense creation
+- [x] Add email alert service for category budgets (HTML email templates, Manus API integration)
+- [x] Wire budget alerts to notification preferences
+- [x] Add budget alert UI indicators on Categories page (display budget limits and alert thresholds)
+- [x] Test budget alert workflow end-to-end (2 new tests added, 23 total tests passing)

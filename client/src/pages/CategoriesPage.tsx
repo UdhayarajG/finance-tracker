@@ -297,9 +297,14 @@ export default function CategoriesPage() {
                           <p className="text-sm text-muted-foreground">{category.description}</p>
                         )}
                         {category.monthlyBudgetLimit && (
-                          <p className="text-xs text-muted-foreground mt-1">
-                            Monthly Budget: ${parseFloat(category.monthlyBudgetLimit).toFixed(2)}
-                          </p>
+                          <div className="mt-2 space-y-1">
+                            <p className="text-xs text-muted-foreground">
+                              Monthly Budget: ${parseFloat(category.monthlyBudgetLimit).toFixed(2)}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              Alert Threshold: {category.budgetAlertThreshold || 80}%
+                            </p>
+                          </div>
                         )}
                       </div>
                     </div>
