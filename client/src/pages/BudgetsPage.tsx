@@ -113,13 +113,14 @@ export default function BudgetsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Budgets</h1>
-          <p className="text-muted-foreground mt-1">Set and track your monthly budgets</p>
-        </div>
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      {/* Header with Gradient */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/20 p-6 border border-green-200 dark:border-green-800">
+        <div className="relative z-10 flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight text-green-900 dark:text-green-50">Budgets</h1>
+            <p className="text-green-700 dark:text-green-200 mt-1">Set and track your monthly budgets</p>
+          </div>
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="w-4 h-4 mr-2" />
@@ -127,13 +128,13 @@ export default function BudgetsPage() {
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Create New Budget</DialogTitle>
-              <DialogDescription>Set a budget for {selectedMonth}</DialogDescription>
+            <DialogHeader className="border-b border-green-200 dark:border-green-800 pb-4">
+              <DialogTitle className="text-green-900 dark:text-green-50">Create New Budget</DialogTitle>
+              <DialogDescription className="text-green-600 dark:text-green-400">Set a budget for {selectedMonth}</DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="category">Category *</Label>
+                <Label htmlFor="category" className="text-green-900 dark:text-green-100 font-semibold">Category *</Label>
                 <Select value={formData.categoryId} onValueChange={(value) => setFormData({ ...formData, categoryId: value })}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a category" />
@@ -199,7 +200,8 @@ export default function BudgetsPage() {
               </Button>
             </form>
           </DialogContent>
-        </Dialog>
+          </Dialog>
+        </div>
       </div>
 
       {/* Month Selector */}

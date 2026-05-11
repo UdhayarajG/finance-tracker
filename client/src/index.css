@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
 
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -45,86 +45,101 @@
 }
 
 :root {
-  --primary: oklch(0.6 0.15 142);
-  --primary-foreground: oklch(0.95 0.02 142);
-  --sidebar-primary: oklch(0.55 0.14 142);
-  --sidebar-primary-foreground: oklch(0.95 0.02 142);
-  --chart-1: oklch(0.75 0.1 142);
-  --chart-2: oklch(0.65 0.13 142);
-  --chart-3: oklch(0.6 0.15 142);
-  --chart-4: oklch(0.55 0.14 142);
-  --chart-5: oklch(0.5 0.12 142);
-  --radius: 0.65rem;
+  /* Monochromatic Green Palette */
+  --green-50: oklch(0.98 0.01 142);
+  --green-100: oklch(0.96 0.02 142);
+  --green-200: oklch(0.92 0.04 142);
+  --green-300: oklch(0.85 0.08 142);
+  --green-400: oklch(0.75 0.12 142);
+  --green-500: oklch(0.65 0.15 142);
+  --green-600: oklch(0.55 0.14 142);
+  --green-700: oklch(0.45 0.12 142);
+  --green-800: oklch(0.35 0.10 142);
+  --green-900: oklch(0.25 0.08 142);
+
+  --primary: var(--green-600);
+  --primary-foreground: oklch(0.98 0.01 142);
+  --sidebar-primary: var(--green-700);
+  --sidebar-primary-foreground: oklch(0.98 0.01 142);
+  
+  /* Chart colors - monochromatic green variations */
+  --chart-1: var(--green-300);
+  --chart-2: var(--green-400);
+  --chart-3: var(--green-500);
+  --chart-4: var(--green-600);
+  --chart-5: var(--green-700);
+  
+  --radius: 0.75rem;
   --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
+  --foreground: oklch(0.2 0.01 142);
+  --card: oklch(0.98 0.01 142);
+  --card-foreground: oklch(0.2 0.01 142);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
+  --popover-foreground: oklch(0.2 0.01 142);
+  --secondary: var(--green-100);
+  --secondary-foreground: var(--green-900);
+  --muted: var(--green-100);
+  --muted-foreground: var(--green-600);
+  --accent: var(--green-500);
+  --accent-foreground: oklch(0.98 0.01 142);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  --border: var(--green-200);
+  --input: var(--green-50);
+  --ring: var(--green-500);
+  --sidebar: oklch(0.98 0.01 142);
+  --sidebar-foreground: var(--green-900);
+  --sidebar-accent: var(--green-100);
+  --sidebar-accent-foreground: var(--green-900);
+  --sidebar-border: var(--green-200);
+  --sidebar-ring: var(--green-500);
   
   /* Finance-specific semantic colors */
-  --income: oklch(0.6 0.15 142);
+  --income: var(--green-600);
   --expense: oklch(0.577 0.245 27.325);
   --loan: oklch(0.65 0.2 290);
-  --budget: oklch(0.65 0.18 50);
+  --budget: var(--green-500);
 }
 
 .dark {
-  --primary: oklch(0.65 0.16 142);
-  --primary-foreground: oklch(0.95 0.02 142);
-  --sidebar-primary: oklch(0.6 0.15 142);
-  --sidebar-primary-foreground: oklch(0.95 0.02 142);
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.85 0.005 65);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.85 0.005 65);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.85 0.005 65);
-  --secondary: oklch(0.24 0.006 286.033);
-  --secondary-foreground: oklch(0.7 0.005 65);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground:  oklch(0.92 0.005 65);
+  --primary: var(--green-400);
+  --primary-foreground: var(--green-900);
+  --sidebar-primary: var(--green-500);
+  --sidebar-primary-foreground: var(--green-900);
+  --background: oklch(0.12 0.01 142);
+  --foreground: oklch(0.92 0.02 142);
+  --card: oklch(0.16 0.01 142);
+  --card-foreground: oklch(0.92 0.02 142);
+  --popover: oklch(0.16 0.01 142);
+  --popover-foreground: oklch(0.92 0.02 142);
+  --secondary: var(--green-900);
+  --secondary-foreground: var(--green-100);
+  --muted: var(--green-800);
+  --muted-foreground: var(--green-300);
+  --accent: var(--green-400);
+  --accent-foreground: var(--green-900);
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.488 0.243 264.376);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.85 0.005 65);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground:  oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376);
+  --border: var(--green-700);
+  --input: var(--green-800);
+  --ring: var(--green-400);
+  --chart-1: var(--green-300);
+  --chart-2: var(--green-400);
+  --chart-3: var(--green-500);
+  --chart-4: var(--green-600);
+  --chart-5: var(--green-700);
+  --sidebar: oklch(0.14 0.01 142);
+  --sidebar-foreground: oklch(0.92 0.02 142);
+  --sidebar-accent: var(--green-800);
+  --sidebar-accent-foreground: var(--green-100);
+  --sidebar-border: var(--green-700);
+  --sidebar-ring: var(--green-400);
   
   /* Finance-specific semantic colors for dark mode */
-  --income: oklch(0.75 0.18 142);
+  --income: var(--green-400);
   --expense: oklch(0.704 0.191 22.216);
   --loan: oklch(0.75 0.22 290);
-  --budget: oklch(0.75 0.2 50);
+  --budget: var(--green-400);
 }
 
 @layer base {
@@ -137,7 +152,16 @@
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    @apply font-semibold tracking-tight;
+    @apply font-bold tracking-tight;
+  }
+  h1 {
+    @apply text-4xl;
+  }
+  h2 {
+    @apply text-3xl;
+  }
+  h3 {
+    @apply text-2xl;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -169,42 +193,131 @@
     min-width: 0;
   }
 
-  /* Stat card for dashboard */
+  /* Enhanced Stat Card */
   .stat-card {
-    @apply bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200 p-6 flex flex-col justify-between;
+    @apply bg-gradient-to-br from-card to-green-50 dark:from-card dark:to-green-900/20 rounded-xl border border-green-200 dark:border-green-800 shadow-sm hover:shadow-lg transition-all duration-300 p-6 flex flex-col justify-between relative overflow-hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 to-green-600;
+  }
+
+  /* Enhanced Card */
+  .enhanced-card {
+    @apply bg-card rounded-xl border border-green-200 dark:border-green-800 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden;
+  }
+
+  .enhanced-card:hover {
+    @apply border-green-300 dark:border-green-700;
+  }
+
+  /* Interactive Button Enhancements */
+  .btn-interactive {
+    @apply relative overflow-hidden transition-all duration-300;
+  }
+
+  .btn-interactive::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 transition-opacity duration-300;
+  }
+
+  .btn-interactive:hover::before {
+    @apply opacity-20;
+  }
+
+  /* Smooth transitions for interactive elements */
+  .interactive-element {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .interactive-element:hover {
+    @apply scale-105;
   }
 
   /* Finance-specific color utilities */
   .text-income {
-    color: hsl(var(--income));
+    @apply text-green-600 dark:text-green-400;
   }
 
   .text-expense {
-    color: hsl(var(--expense));
+    @apply text-red-600 dark:text-red-400;
   }
 
   .text-loan {
-    color: hsl(var(--loan));
+    @apply text-purple-600 dark:text-purple-400;
   }
 
   .text-budget {
-    color: hsl(var(--budget));
+    @apply text-green-500 dark:text-green-400;
   }
 
   .bg-income {
-    background-color: hsl(var(--income) / 0.1);
+    @apply bg-green-100 dark:bg-green-900/30;
   }
 
   .bg-expense {
-    background-color: hsl(var(--expense) / 0.1);
+    @apply bg-red-100 dark:bg-red-900/30;
   }
 
   .bg-loan {
-    background-color: hsl(var(--loan) / 0.1);
+    @apply bg-purple-100 dark:bg-purple-900/30;
   }
 
   .bg-budget {
-    background-color: hsl(var(--budget) / 0.1);
+    @apply bg-green-100 dark:bg-green-900/30;
+  }
+
+  /* Progress bar with green gradient */
+  .progress-bar-green {
+    @apply h-2 bg-green-100 dark:bg-green-900 rounded-full overflow-hidden;
+  }
+
+  .progress-bar-green > div {
+    @apply h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full transition-all duration-500;
+  }
+
+  /* Animated gradient background */
+  .gradient-animate {
+    background: linear-gradient(-45deg, var(--green-400), var(--green-600), var(--green-500), var(--green-400));
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+  }
+
+  @keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Smooth fade in animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fade-in-up {
+    animation: fadeInUp 0.5s ease-out;
+  }
+
+  /* Pulse animation for alerts */
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  .pulse-soft {
+    animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   @media (min-width: 640px) {

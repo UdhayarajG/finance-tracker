@@ -151,13 +151,14 @@ export default function ExpensesPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Expenses</h1>
-          <p className="text-muted-foreground mt-1">Track and manage your daily expenses</p>
-        </div>
-        <div className="flex gap-2">
+      {/* Header with Gradient */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/20 p-6 border border-green-200 dark:border-green-800">
+        <div className="relative z-10 flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight text-green-900 dark:text-green-50">Expenses</h1>
+            <p className="text-green-700 dark:text-green-200 mt-1">Track and manage your daily expenses</p>
+          </div>
+          <div className="flex gap-2">
           <ExportButtons
             onExportCSV={handleExportCSV}
             onExportPDF={handleExportPDF}
@@ -172,25 +173,26 @@ export default function ExpensesPage() {
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Add New Expense</DialogTitle>
-              <DialogDescription>Record a new expense transaction</DialogDescription>
+            <DialogHeader className="border-b border-green-200 dark:border-green-800 pb-4">
+              <DialogTitle className="text-green-900 dark:text-green-50">Add New Expense</DialogTitle>
+              <DialogDescription className="text-green-600 dark:text-green-400">Record a new expense transaction</DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="description">Description *</Label>
+                <Label htmlFor="description" className="text-green-900 dark:text-green-100 font-semibold">Description *</Label>
                 <Input
                   id="description"
                   placeholder="e.g., Grocery shopping"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  className="border-green-200 dark:border-green-800 focus:ring-green-500 focus:border-green-500 transition-all"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="amount">Amount *</Label>
+                  <Label htmlFor="amount" className="text-green-900 dark:text-green-100 font-semibold">Amount *</Label>
                   <Input
                     id="amount"
                     type="number"
@@ -198,23 +200,25 @@ export default function ExpensesPage() {
                     step="0.01"
                     value={formData.amount}
                     onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                    className="border-green-200 dark:border-green-800 focus:ring-green-500 focus:border-green-500 transition-all"
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="date">Date *</Label>
+                  <Label htmlFor="date" className="text-green-900 dark:text-green-100 font-semibold">Date *</Label>
                   <Input
                     id="date"
                     type="date"
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    className="border-green-200 dark:border-green-800 focus:ring-green-500 focus:border-green-500 transition-all"
                     required
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="category">Category *</Label>
+                <Label htmlFor="category" className="text-green-900 dark:text-green-100 font-semibold">Category *</Label>
                 <Select value={formData.categoryId} onValueChange={(value) => setFormData({ ...formData, categoryId: value })}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a category" />
@@ -286,32 +290,33 @@ export default function ExpensesPage() {
             </form>
             </DialogContent>
           </Dialog>
+          </div>
         </div>
       </div>
 
       {/* Search and Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-green-600 dark:text-green-400" />
           <Input
             placeholder="Search expenses..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
+            className="pl-10 border-green-200 dark:border-green-800 focus:ring-green-500"
           />
         </div>
-        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
+        <div className="enhanced-card">
           <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground">Total Expenses</p>
-            <p className="text-2xl font-bold text-expense">${totalExpenses.toFixed(2)}</p>
+            <p className="text-sm text-green-600 dark:text-green-400">Total Expenses</p>
+            <p className="text-3xl font-bold text-red-600 dark:text-red-400">${totalExpenses.toFixed(2)}</p>
           </CardContent>
-        </Card>
+        </div>
       </div>
 
       {/* Expenses List */}
-      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-        <CardHeader>
-          <CardTitle>Expense History</CardTitle>
+      <div className="enhanced-card">
+        <CardHeader className="border-b border-green-200 dark:border-green-800">
+          <CardTitle className="text-green-900 dark:text-green-50">Expense History</CardTitle>
           <CardDescription>{displayExpenses?.length || 0} transactions</CardDescription>
         </CardHeader>
         <CardContent>
@@ -359,7 +364,7 @@ export default function ExpensesPage() {
             </div>
           )}
         </CardContent>
-      </Card>
+      </div>
     </div>
   );
 }

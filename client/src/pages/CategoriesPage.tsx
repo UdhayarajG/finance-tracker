@@ -133,49 +133,52 @@ export default function CategoriesPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Categories</h1>
-          <p className="text-muted-foreground mt-1">Manage your expense categories and budget limits</p>
-        </div>
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => handleOpenDialog()}>
-              <Plus className="w-4 h-4 mr-2" />
-              Create Category
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>{editingId ? "Edit Category" : "Create New Category"}</DialogTitle>
-              <DialogDescription>
-                {editingId ? "Update your category details" : "Create a custom expense category with optional budget limit"}
-              </DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Category Name *</Label>
-                <Input
-                  id="name"
-                  placeholder="e.g., Entertainment"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                />
-              </div>
+      {/* Header with Gradient */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/20 p-6 border border-green-200 dark:border-green-800">
+        <div className="relative z-10 flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight text-green-900 dark:text-green-50">Categories</h1>
+            <p className="text-green-700 dark:text-green-200 mt-1">Manage your expense categories and budget limits</p>
+          </div>
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-green-600 hover:bg-green-700 text-white btn-interactive" onClick={() => handleOpenDialog()}>
+                <Plus className="w-4 h-4 mr-2" />
+                Create Category
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader className="border-b border-green-200 dark:border-green-800 pb-4">
+                <DialogTitle className="text-green-900 dark:text-green-50">{editingId ? "Edit Category" : "Create New Category"}</DialogTitle>
+                <DialogDescription className="text-green-600 dark:text-green-400">
+                  {editingId ? "Update your category details" : "Create a custom expense category with optional budget limit"}
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-green-900 dark:text-green-100 font-semibold">Category Name *</Label>
+                  <Input
+                    id="name"
+                    placeholder="e.g., Entertainment"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="border-green-200 dark:border-green-800 focus:ring-green-500 focus:border-green-500 transition-all"
+                    required
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
-                <Input
-                  id="description"
-                  placeholder="Optional description"
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                />
-              </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description" className="text-green-900 dark:text-green-100 font-semibold">Description</Label>
+                  <Input
+                    id="description"
+                    placeholder="Optional description"
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    className="border-green-200 dark:border-green-800 focus:ring-green-500 focus:border-green-500 transition-all"
+                  />
+                </div>
 
-              <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="color">Color</Label>
                   <div className="flex gap-2">
@@ -247,9 +250,10 @@ export default function CategoriesPage() {
                   "Create Category"
                 )}
               </Button>
-            </form>
-          </DialogContent>
-        </Dialog>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Error State */}

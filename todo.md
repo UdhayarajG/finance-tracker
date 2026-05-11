@@ -121,3 +121,16 @@
 - [x] Wire budget alerts to notification preferences
 - [x] Add budget alert UI indicators on Categories page (display budget limits and alert thresholds)
 - [x] Test budget alert workflow end-to-end (2 new tests added, 23 total tests passing)
+
+
+## Phase 16: UI Revamp - Monochromatic Green Palette & Enhanced Interactivity
+- [x] Define monochromatic green color palette with CSS variables
+- [x] Update global styles and Tailwind theme configuration
+- [x] Revamp Dashboard with enhanced cards and animations
+- [x] Enhance Expense Management UI with better interactions
+- [x] Revamp Budget and Category pages with improved layouts
+- [x] Add smooth animations and transitions throughout
+- [x] Improve form interactions and validation feedback
+- [ ] Enhance data visualizations with green color scheme
+- [ ] Update Navigation and Sidebar styling
+- [ ] Final testing and polish

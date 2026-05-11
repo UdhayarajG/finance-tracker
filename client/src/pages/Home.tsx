@@ -1,7 +1,7 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, TrendingUp, TrendingDown, Wallet, DollarSign, AlertCircle } from "lucide-react";
+import { Loader2, TrendingUp, TrendingDown, Wallet, DollarSign, AlertCircle, ArrowRight, Bell } from "lucide-react";
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { useEffect, useState } from "react";
@@ -63,131 +63,169 @@ export default function Home() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight">Welcome back, {user?.name}</h1>
-        <p className="text-muted-foreground">Here's your financial overview for this month</p>
+      {/* Header with Gradient */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/20 p-8 border border-green-200 dark:border-green-800">
+        <div className="relative z-10">
+          <h1 className="text-4xl font-bold tracking-tight text-green-900 dark:text-green-50">
+            Welcome back, {user?.name}
+          </h1>
+          <p className="text-green-700 dark:text-green-200 mt-2">
+            Here's your financial overview for this month
+          </p>
+        </div>
+        <div className="absolute top-0 right-0 w-40 h-40 bg-green-200 dark:bg-green-700 opacity-10 rounded-full blur-3xl"></div>
       </div>
 
       {/* Alerts */}
       {notifications && notifications.length > 0 && (
-        <div className="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-900 rounded-lg p-4 flex gap-3">
-          <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-500 flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="font-medium text-yellow-900 dark:text-yellow-100">You have {notifications.length} notification{notifications.length !== 1 ? 's' : ''}</p>
-            <p className="text-sm text-yellow-800 dark:text-yellow-200">Check your notifications for important updates</p>
+        <div className="bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/20 border border-green-300 dark:border-green-700 rounded-xl p-4 flex gap-3 animate-pulse-soft">
+          <Bell className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="font-semibold text-green-900 dark:text-green-100">
+              {notifications.length} notification{notifications.length !== 1 ? 's' : ''}
+            </p>
+            <p className="text-sm text-green-700 dark:text-green-200">
+              Check your notifications for important updates
+            </p>
           </div>
+          <Button 
+            variant="ghost" 
+            size="sm"
+            className="text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-700"
+            onClick={() => navigate("/notifications") as any}
+          >
+            View
+          </Button>
         </div>
       )}
 
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Total Expenses */}
-        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium flex items-center justify-between">
-              <span>Total Expenses</span>
-              <TrendingDown className="w-4 h-4 text-expense" />
-            </CardTitle>
-            <CardDescription>This month</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-expense">
+      {/* Key Metrics Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Total Expenses Card */}
+        <div className="stat-card group cursor-pointer fade-in-up" onClick={() => navigate("/expenses") as any}>
+          <div className="relative">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-semibold text-green-900 dark:text-green-100">Total Expenses</span>
+              <div className="p-2 bg-green-100 dark:bg-green-900/50 rounded-lg group-hover:bg-green-200 dark:group-hover:bg-green-800 transition-colors">
+                <TrendingDown className="w-4 h-4 text-green-600 dark:text-green-400" />
+              </div>
+            </div>
+            <div className="text-3xl font-bold text-green-700 dark:text-green-300 group-hover:text-green-800 dark:group-hover:text-green-200 transition-colors">
               ${totalExpenses.toFixed(2)}
             </div>
-            <p className="text-xs text-muted-foreground mt-2">
+            <p className="text-xs text-green-600 dark:text-green-400 mt-3">
               {expenses?.length || 0} transactions
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        {/* Active Loans */}
-        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium flex items-center justify-between">
-              <span>Active Loans</span>
-              <Wallet className="w-4 h-4 text-loan" />
-            </CardTitle>
-            <CardDescription>Outstanding balance</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-loan">
+        {/* Active Loans Card */}
+        <div className="stat-card group cursor-pointer fade-in-up" onClick={() => navigate("/loans") as any}>
+          <div className="relative">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-semibold text-green-900 dark:text-green-100">Active Loans</span>
+              <div className="p-2 bg-purple-100 dark:bg-purple-900/50 rounded-lg group-hover:bg-purple-200 dark:group-hover:bg-purple-800 transition-colors">
+                <Wallet className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+              </div>
+            </div>
+            <div className="text-3xl font-bold text-purple-700 dark:text-purple-300 group-hover:text-purple-800 dark:group-hover:text-purple-200 transition-colors">
               ${totalLoans.toFixed(2)}
             </div>
-            <p className="text-xs text-muted-foreground mt-2">
+            <p className="text-xs text-purple-600 dark:text-purple-400 mt-3">
               {activeLoans} active loan{activeLoans !== 1 ? 's' : ''}
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        {/* Net Position */}
-        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium flex items-center justify-between">
-              <span>Net Position</span>
-              <DollarSign className="w-4 h-4 text-primary" />
-            </CardTitle>
-            <CardDescription>Expenses + Loans</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-destructive">
+        {/* Net Position Card */}
+        <div className="stat-card group cursor-pointer fade-in-up" onClick={() => navigate("/reports") as any}>
+          <div className="relative">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-semibold text-green-900 dark:text-green-100">Net Position</span>
+              <div className="p-2 bg-red-100 dark:bg-red-900/50 rounded-lg group-hover:bg-red-200 dark:group-hover:bg-red-800 transition-colors">
+                <DollarSign className="w-4 h-4 text-red-600 dark:text-red-400" />
+              </div>
+            </div>
+            <div className="text-3xl font-bold text-red-600 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-red-300 transition-colors">
               ${(totalExpenses + totalLoans).toFixed(2)}
             </div>
-            <p className="text-xs text-muted-foreground mt-2">
-              This month's financial snapshot
+            <p className="text-xs text-red-600 dark:text-red-400 mt-3">
+              This month's snapshot
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        {/* Quick Actions */}
-        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col justify-between">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">Quick Actions</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="w-full justify-start"
-              onClick={() => navigate("/expenses") as any}
-            >
-              + Add Expense
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="w-full justify-start"
-              onClick={() => navigate("/loans") as any}
-            >
-              + Add Loan
-            </Button>
-          </CardContent>
-        </Card>
+        {/* Quick Actions Card */}
+        <div className="stat-card fade-in-up">
+          <div className="relative">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-semibold text-green-900 dark:text-green-100">Quick Actions</span>
+              <div className="p-2 bg-green-100 dark:bg-green-900/50 rounded-lg">
+                <TrendingUp className="w-4 h-4 text-green-600 dark:text-green-400" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Button 
+                size="sm" 
+                className="w-full justify-between bg-green-600 hover:bg-green-700 text-white btn-interactive"
+                onClick={() => navigate("/expenses") as any}
+              >
+                <span>Add Expense</span>
+                <ArrowRight className="w-3 h-3" />
+              </Button>
+              <Button 
+                size="sm" 
+                variant="outline"
+                className="w-full justify-between border-green-300 dark:border-green-700 text-green-700 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-900/20 btn-interactive"
+                onClick={() => navigate("/loans") as any}
+              >
+                <span>Add Loan</span>
+                <ArrowRight className="w-3 h-3" />
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Recent Transactions */}
-      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-        <CardHeader>
-          <CardTitle>Recent Transactions</CardTitle>
-          <CardDescription>Your latest expenses</CardDescription>
+      <div className="enhanced-card">
+        <CardHeader className="border-b border-green-200 dark:border-green-800">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-green-900 dark:text-green-50">Recent Transactions</CardTitle>
+              <CardDescription className="text-green-600 dark:text-green-400">Your latest expenses</CardDescription>
+            </div>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              className="text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/30"
+              onClick={() => navigate("/expenses") as any}
+            >
+              View All
+            </Button>
+          </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           {expensesLoading ? (
             <div className="flex justify-center py-8">
-              <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              <Loader2 className="w-6 h-6 animate-spin text-green-600" />
             </div>
           ) : expenses && expenses.length > 0 ? (
-            <div className="space-y-4">
-              {expenses.map((expense: any) => (
-                <div key={expense.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+            <div className="space-y-3">
+              {expenses.map((expense: any, index: number) => (
+                <div 
+                  key={expense.id} 
+                  className="flex items-center justify-between p-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors fade-in-up"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
                   <div className="flex-1">
-                    <p className="font-medium">{expense.description}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="font-medium text-green-900 dark:text-green-50">{expense.description}</p>
+                    <p className="text-sm text-green-600 dark:text-green-400">
                       {new Date(expense.date).toLocaleDateString()}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold text-expense">
+                    <p className="font-semibold text-red-600 dark:text-red-400">
                       -${parseFloat(expense.amount.toString()).toFixed(2)}
                     </p>
                   </div>
@@ -195,12 +233,10 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-8">
-              <p className="text-muted-foreground">No expenses yet. Start tracking your spending!</p>
+            <div className="text-center py-12">
+              <p className="text-green-600 dark:text-green-400 mb-4">No expenses yet. Start tracking your spending!</p>
               <Button 
-                variant="outline" 
-                size="sm" 
-                className="mt-4"
+                className="bg-green-600 hover:bg-green-700 text-white"
                 onClick={() => navigate("/expenses") as any}
               >
                 Add First Expense
@@ -208,36 +244,60 @@ export default function Home() {
             </div>
           )}
         </CardContent>
-      </Card>
+      </div>
 
       {/* Quick Links */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer hover:border-primary transition-colors" onClick={() => navigate("/expenses") as any}>
-          <CardHeader>
-            <CardTitle className="text-base">Manage Expenses</CardTitle>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div 
+          className="enhanced-card group cursor-pointer fade-in-up" 
+          onClick={() => navigate("/expenses") as any}
+        >
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-green-900 dark:text-green-50">Manage Expenses</CardTitle>
+              <ArrowRight className="w-5 h-5 text-green-600 dark:text-green-400 group-hover:translate-x-1 transition-transform" />
+            </div>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">Track and categorize your spending</p>
+            <p className="text-sm text-green-600 dark:text-green-400">
+              Track and categorize your spending with ease
+            </p>
           </CardContent>
-        </Card>
+        </div>
 
-        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer hover:border-primary transition-colors" onClick={() => navigate("/loans") as any}>
-          <CardHeader>
-            <CardTitle className="text-base">Manage Loans</CardTitle>
+        <div 
+          className="enhanced-card group cursor-pointer fade-in-up" 
+          onClick={() => navigate("/loans") as any}
+        >
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-green-900 dark:text-green-50">Manage Loans</CardTitle>
+              <ArrowRight className="w-5 h-5 text-green-600 dark:text-green-400 group-hover:translate-x-1 transition-transform" />
+            </div>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">Monitor your loan payments and balances</p>
+            <p className="text-sm text-green-600 dark:text-green-400">
+              Monitor your loan payments and balances
+            </p>
           </CardContent>
-        </Card>
+        </div>
 
-        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer hover:border-primary transition-colors" onClick={() => navigate("/reports") as any}>
-          <CardHeader>
-            <CardTitle className="text-base">View Reports</CardTitle>
+        <div 
+          className="enhanced-card group cursor-pointer fade-in-up" 
+          onClick={() => navigate("/reports") as any}
+        >
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-green-900 dark:text-green-50">View Reports</CardTitle>
+              <ArrowRight className="w-5 h-5 text-green-600 dark:text-green-400 group-hover:translate-x-1 transition-transform" />
+            </div>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">Analyze your financial trends</p>
+            <p className="text-sm text-green-600 dark:text-green-400">
+              Analyze your financial trends and insights
+            </p>
           </CardContent>
-        </Card>
+        </div>
       </div>
     </div>
   );
