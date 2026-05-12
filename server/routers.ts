@@ -15,11 +15,76 @@ export const appRouter = router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
-      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
+      ctx.res.clearCookie('session', { ...cookieOptions, maxAge: -1 });
       return {
         success: true,
       } as const;
     }),
+    // Note: Email/password authentication is handled via OAuth
+    // The login and signup procedures below are placeholders for future implementation
+    login: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        password: z.string().min(8),
+        rememberMe: z.boolean().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        // In a real implementation, this would:
+        // 1. Hash and validate password against database
+        // 2. Create session token
+        // 3. Set secure cookie
+        // For now, we rely on OAuth for authentication
+        throw new TRPCError({
+          code: 'NOT_IMPLEMENTED',
+          message: 'Email/password login is not yet implemented. Please use OAuth login.',
+        });
+      }),
+    signup: publicProcedure
+      .input(z.object({
+        name: z.string().min(1),
+        email: z.string().email(),
+        password: z.string().min(8),
+      }))
+      .mutation(async ({ input }) => {
+        // In a real implementation, this would:
+        // 1. Validate email is not already registered
+        // 2. Hash password
+        // 3. Create user in database
+        // 4. Send verification email
+        // For now, we rely on OAuth for authentication
+        throw new TRPCError({
+          code: 'NOT_IMPLEMENTED',
+          message: 'Email/password signup is not yet implemented. Please use OAuth signup.',
+        });
+      }),
+    requestPasswordReset: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+      }))
+      .mutation(async ({ input }) => {
+        // In a real implementation, this would:
+        // 1. Find user by email
+        // 2. Generate reset token
+        // 3. Send reset email with token link
+        // For now, return success to prevent email enumeration
+        return { success: true, message: 'If an account exists, a reset link has been sent to your email.' };
+      }),
+    resetPassword: publicProcedure
+      .input(z.object({
+        token: z.string(),
+        newPassword: z.string().min(8),
+      }))
+      .mutation(async ({ input }) => {
+        // In a real implementation, this would:
+        // 1. Validate reset token
+        // 2. Hash new password
+        // 3. Update user password
+        // 4. Invalidate all existing sessions
+        throw new TRPCError({
+          code: 'NOT_IMPLEMENTED',
+          message: 'Password reset is not yet implemented.',
+        });
+      }),
   }),
 
   // ============= EXPENSE PROCEDURES =============
