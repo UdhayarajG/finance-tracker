@@ -188,7 +188,7 @@ export default function BudgetsPage() {
                 />
               </div>
 
-              <Button type="submit" className="w-full" disabled={createBudget.isPending}>
+              <Button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white" disabled={createBudget.isPending}>
                 {createBudget.isPending ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />

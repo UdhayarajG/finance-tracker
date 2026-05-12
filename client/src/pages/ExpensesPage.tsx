@@ -277,7 +277,7 @@ export default function ExpensesPage() {
                 />
               </div>
 
-              <Button type="submit" className="w-full" disabled={createExpense.isPending}>
+              <Button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white" disabled={createExpense.isPending}>
                 {createExpense.isPending ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -327,29 +327,26 @@ export default function ExpensesPage() {
           ) : displayExpenses && displayExpenses.length > 0 ? (
             <div className="space-y-2">
               {displayExpenses.map((expense: any) => (
-                <div key={expense.id} className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-accent/5 transition-colors">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3">
-                      <div>
-                        <p className="font-medium">{expense.description}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {new Date(expense.date).toLocaleDateString()} {expense.merchant && `• ${expense.merchant}`}
-                        </p>
-                      </div>
-                    </div>
+                <div key={expense.id} className="flex items-center justify-between p-4 border border-green-200 dark:border-green-800 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/10 transition-colors">
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-green-900 dark:text-green-50 truncate">{expense.description}</p>
+                    <p className="text-sm text-green-600 dark:text-green-400">
+                      {new Date(expense.date).toLocaleDateString()} {expense.merchant && `• ${expense.merchant}`}
+                    </p>
                   </div>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3 flex-shrink-0 ml-4">
                     <div className="text-right">
-                      <p className="font-semibold text-expense">-${parseFloat(expense.amount.toString()).toFixed(2)}</p>
-                      <p className="text-xs text-muted-foreground capitalize">{expense.paymentMethod.replace("_", " ")}</p>
+                      <p className="font-semibold text-red-600 dark:text-red-400">-${parseFloat(expense.amount.toString()).toFixed(2)}</p>
+                      <p className="text-xs text-green-600 dark:text-green-400 capitalize">{expense.paymentMethod.replace("_", " ")}</p>
                     </div>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => handleDelete(expense.id)}
                       disabled={deleteExpense.isPending}
+                      className="hover:bg-red-100 dark:hover:bg-red-900/20"
                     >
-                      <Trash2 className="w-4 h-4 text-destructive" />
+                      <Trash2 className="w-4 h-4 text-red-600 dark:text-red-400" />
                     </Button>
                   </div>
                 </div>

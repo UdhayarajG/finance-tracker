@@ -236,7 +236,7 @@ export default function CategoriesPage() {
 
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full bg-green-600 hover:bg-green-700 text-white"
                 disabled={createCategory.isPending || updateCategory.isPending}
               >
                 {createCategory.isPending || updateCategory.isPending ? (

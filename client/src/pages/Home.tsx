@@ -100,71 +100,77 @@ export default function Home() {
       )}
 
       {/* Key Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Expenses Card */}
         <div className="stat-card group cursor-pointer fade-in-up" onClick={() => navigate("/expenses") as any}>
-          <div className="relative">
-            <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col h-full">
+            <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-semibold text-green-900 dark:text-green-100">Total Expenses</span>
-              <div className="p-2 bg-green-100 dark:bg-green-900/50 rounded-lg group-hover:bg-green-200 dark:group-hover:bg-green-800 transition-colors">
+              <div className="p-2 bg-green-100 dark:bg-green-900/50 rounded-lg group-hover:bg-green-200 dark:group-hover:bg-green-800 transition-colors flex-shrink-0">
                 <TrendingDown className="w-4 h-4 text-green-600 dark:text-green-400" />
               </div>
             </div>
-            <div className="text-3xl font-bold text-green-700 dark:text-green-300 group-hover:text-green-800 dark:group-hover:text-green-200 transition-colors">
-              ${totalExpenses.toFixed(2)}
+            <div className="flex-1">
+              <div className="text-3xl font-bold text-green-700 dark:text-green-300 group-hover:text-green-800 dark:group-hover:text-green-200 transition-colors">
+                ${totalExpenses.toFixed(2)}
+              </div>
+              <p className="text-xs text-green-600 dark:text-green-400 mt-2">
+                {expenses?.length || 0} transactions
+              </p>
             </div>
-            <p className="text-xs text-green-600 dark:text-green-400 mt-3">
-              {expenses?.length || 0} transactions
-            </p>
           </div>
         </div>
 
         {/* Active Loans Card */}
         <div className="stat-card group cursor-pointer fade-in-up" onClick={() => navigate("/loans") as any}>
-          <div className="relative">
-            <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col h-full">
+            <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-semibold text-green-900 dark:text-green-100">Active Loans</span>
-              <div className="p-2 bg-purple-100 dark:bg-purple-900/50 rounded-lg group-hover:bg-purple-200 dark:group-hover:bg-purple-800 transition-colors">
+              <div className="p-2 bg-purple-100 dark:bg-purple-900/50 rounded-lg group-hover:bg-purple-200 dark:group-hover:bg-purple-800 transition-colors flex-shrink-0">
                 <Wallet className="w-4 h-4 text-purple-600 dark:text-purple-400" />
               </div>
             </div>
-            <div className="text-3xl font-bold text-purple-700 dark:text-purple-300 group-hover:text-purple-800 dark:group-hover:text-purple-200 transition-colors">
-              ${totalLoans.toFixed(2)}
+            <div className="flex-1">
+              <div className="text-3xl font-bold text-purple-700 dark:text-purple-300 group-hover:text-purple-800 dark:group-hover:text-purple-200 transition-colors">
+                ${totalLoans.toFixed(2)}
+              </div>
+              <p className="text-xs text-purple-600 dark:text-purple-400 mt-2">
+                {activeLoans} active loan{activeLoans !== 1 ? 's' : ''}
+              </p>
             </div>
-            <p className="text-xs text-purple-600 dark:text-purple-400 mt-3">
-              {activeLoans} active loan{activeLoans !== 1 ? 's' : ''}
-            </p>
           </div>
         </div>
 
         {/* Net Position Card */}
         <div className="stat-card group cursor-pointer fade-in-up" onClick={() => navigate("/reports") as any}>
-          <div className="relative">
-            <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col h-full">
+            <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-semibold text-green-900 dark:text-green-100">Net Position</span>
-              <div className="p-2 bg-red-100 dark:bg-red-900/50 rounded-lg group-hover:bg-red-200 dark:group-hover:bg-red-800 transition-colors">
+              <div className="p-2 bg-red-100 dark:bg-red-900/50 rounded-lg group-hover:bg-red-200 dark:group-hover:bg-red-800 transition-colors flex-shrink-0">
                 <DollarSign className="w-4 h-4 text-red-600 dark:text-red-400" />
               </div>
             </div>
-            <div className="text-3xl font-bold text-red-600 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-red-300 transition-colors">
-              ${(totalExpenses + totalLoans).toFixed(2)}
+            <div className="flex-1">
+              <div className="text-3xl font-bold text-red-600 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-red-300 transition-colors">
+                ${(totalExpenses + totalLoans).toFixed(2)}
+              </div>
+              <p className="text-xs text-red-600 dark:text-red-400 mt-2">
+                This month's snapshot
+              </p>
             </div>
-            <p className="text-xs text-red-600 dark:text-red-400 mt-3">
-              This month's snapshot
-            </p>
           </div>
         </div>
 
         {/* Quick Actions Card */}
         <div className="stat-card fade-in-up">
-          <div className="relative">
-            <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col h-full">
+            <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-semibold text-green-900 dark:text-green-100">Quick Actions</span>
-              <div className="p-2 bg-green-100 dark:bg-green-900/50 rounded-lg">
+              <div className="p-2 bg-green-100 dark:bg-green-900/50 rounded-lg flex-shrink-0">
                 <TrendingUp className="w-4 h-4 text-green-600 dark:text-green-400" />
               </div>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 flex-1 flex flex-col justify-end">
               <Button 
                 size="sm" 
                 className="w-full justify-between bg-green-600 hover:bg-green-700 text-white btn-interactive"
