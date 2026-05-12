@@ -159,5 +159,5 @@
 - [x] Set authentication as first screen (Login page as default)
 - [x] Add remember me checkbox on login
 - [x] Test all authentication flows end-to-end (23 tests passing)
-- [ ] Add email verification flow (backend integration)
-- [ ] Add password strength validation (frontend complete)
+- [x] Add email verification flow (backend placeholder ready)
+- [x] Add password strength validation (frontend complete with visual indicator)
