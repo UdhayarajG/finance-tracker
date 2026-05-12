@@ -131,6 +131,6 @@
 - [x] Revamp Budget and Category pages with improved layouts
 - [x] Add smooth animations and transitions throughout
 - [x] Improve form interactions and validation feedback
-- [ ] Enhance data visualizations with green color scheme
-- [ ] Update Navigation and Sidebar styling
-- [ ] Final testing and polish
+- [x] Enhance data visualizations with green color scheme (ReportsPage updated)
+- [x] Update Navigation and Sidebar styling (green theme, active states, gradients)
+- [x] Final testing and polish (23 tests passing, TypeScript clean)

@@ -24,7 +24,8 @@ import {
   Line,
 } from "recharts";
 
-const COLORS = ["#3B82F6", "#8B5CF6", "#EC4899", "#F59E0B", "#10B981", "#06B6D4", "#6366F1", "#EF4444"];
+// Monochromatic green palette with accent colors for contrast
+const COLORS = ["#10B981", "#059669", "#047857", "#065F46", "#064E3B", "#F59E0B", "#DC2626", "#7C3AED"];
 
 export default function ReportsPage() {
   const { user } = useAuth();
@@ -144,29 +145,32 @@ export default function ReportsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Financial Reports</h1>
-          <p className="text-muted-foreground mt-1">Analyze your spending patterns and financial trends</p>
+      {/* Header with Gradient */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/20 p-6 border border-green-200 dark:border-green-800">
+        <div className="relative z-10 flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight text-green-900 dark:text-green-50">Financial Reports</h1>
+            <p className="text-green-700 dark:text-green-200 mt-1">Analyze your spending patterns and financial trends</p>
+          </div>
+          <ExportButtons
+            onExportCSV={handleExportCSV}
+            onExportPDF={handleExportPDF}
+            isLoading={isExporting}
+            label="Export"
+          />
         </div>
-        <ExportButtons
-          onExportCSV={handleExportCSV}
-          onExportPDF={handleExportPDF}
-          isLoading={isExporting}
-          label="Export"
-        />
       </div>
 
       {/* Controls */}
       <div className="flex flex-col sm:flex-row gap-4 items-end">
         <div className="flex-1 space-y-2">
-          <Label htmlFor="month">Select Month</Label>
+          <Label htmlFor="month" className="text-green-900 dark:text-green-100 font-semibold">Select Month</Label>
           <Input
             id="month"
             type="month"
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(e.target.value)}
+            className="border-green-200 dark:border-green-800 focus:ring-green-500 focus:border-green-500 transition-all"
           />
         </div>
         <Button variant="outline">
@@ -177,49 +181,49 @@ export default function ReportsPage() {
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
+        <div className="enhanced-card">
           <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground">Total Expenses</p>
-            <p className="text-2xl font-bold text-expense">${totalExpenses.toFixed(2)}</p>
-            <p className="text-xs text-muted-foreground mt-2">{expenses?.length || 0} transactions</p>
+            <p className="text-sm text-green-600 dark:text-green-400">Total Expenses</p>
+            <p className="text-3xl font-bold text-red-600 dark:text-red-400">${totalExpenses.toFixed(2)}</p>
+            <p className="text-xs text-green-600 dark:text-green-400 mt-2">{expenses?.length || 0} transactions</p>
           </CardContent>
-        </Card>
+        </div>
 
-        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
+        <div className="enhanced-card">
           <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground">Average Daily</p>
-            <p className="text-2xl font-bold text-primary">${avgDailySpending.toFixed(2)}</p>
-            <p className="text-xs text-muted-foreground mt-2">Per day average</p>
+            <p className="text-sm text-green-600 dark:text-green-400">Average Daily</p>
+            <p className="text-3xl font-bold text-green-600 dark:text-green-400">${avgDailySpending.toFixed(2)}</p>
+            <p className="text-xs text-green-600 dark:text-green-400 mt-2">Per day average</p>
           </CardContent>
-        </Card>
+        </div>
 
-        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
+        <div className="enhanced-card">
           <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground">Max Daily Spending</p>
-            <p className="text-2xl font-bold text-warning">${maxDailySpending.toFixed(2)}</p>
-            <p className="text-xs text-muted-foreground mt-2">Highest single day</p>
+            <p className="text-sm text-green-600 dark:text-green-400">Max Daily Spending</p>
+            <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">${maxDailySpending.toFixed(2)}</p>
+            <p className="text-xs text-green-600 dark:text-green-400 mt-2">Highest single day</p>
           </CardContent>
-        </Card>
+        </div>
 
-        <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
+        <div className="enhanced-card">
           <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground">Total Loan Balance</p>
-            <p className="text-2xl font-bold text-loan">${totalLoanBalance.toFixed(2)}</p>
-            <p className="text-xs text-muted-foreground mt-2">{activeLoans.length} active loan{activeLoans.length !== 1 ? 's' : ''}</p>
+            <p className="text-sm text-green-600 dark:text-green-400">Total Loan Balance</p>
+            <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">${totalLoanBalance.toFixed(2)}</p>
+            <p className="text-xs text-green-600 dark:text-green-400 mt-2">{activeLoans.length} active loan{activeLoans.length !== 1 ? 's' : ''}</p>
           </CardContent>
-        </Card>
+        </div>
       </div>
 
       {/* Charts */}
       {isLoading ? (
         <div className="flex justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <Loader2 className="w-8 h-8 animate-spin text-green-600" />
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Pie Chart - Category Breakdown */}
-          <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-            <CardHeader>
+          <div className="enhanced-card">
+            <CardHeader className="border-b border-green-200 dark:border-green-800">
               <CardTitle>Spending by Category</CardTitle>
               <CardDescription>Breakdown of expenses by category</CardDescription>
             </CardHeader>
@@ -250,10 +254,10 @@ export default function ReportsPage() {
                 </div>
               )}
             </CardContent>
-          </Card>
+          </div>
 
           {/* Line Chart - Daily Spending Trend */}
-          <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
+          <div className="enhanced-card">
             <CardHeader>
               <CardTitle>Daily Spending Trend</CardTitle>
               <CardDescription>Your spending pattern throughout the month</CardDescription>
@@ -269,8 +273,8 @@ export default function ReportsPage() {
                     <Line
                       type="monotone"
                       dataKey="amount"
-                      stroke="#3B82F6"
-                      dot={{ fill: "#3B82F6", r: 4 }}
+                      stroke="#10B981"
+                      dot={{ fill: "#10B981", r: 4 }}
                       activeDot={{ r: 6 }}
                     />
                   </LineChart>
@@ -281,13 +285,13 @@ export default function ReportsPage() {
                 </div>
               )}
             </CardContent>
-          </Card>
+          </div>
         </div>
       )}
 
       {/* Category Details Table */}
-      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-        <CardHeader>
+      <div className="enhanced-card">
+        <CardHeader className="border-b border-green-200 dark:border-green-800">
           <CardTitle>Category Details</CardTitle>
           <CardDescription>Detailed breakdown by category</CardDescription>
         </CardHeader>
@@ -322,11 +326,11 @@ export default function ReportsPage() {
             </div>
           )}
         </CardContent>
-      </Card>
+      </div>
 
       {/* Summary */}
-      <Card className="bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-primary/5 to-accent/5">
-        <CardHeader>
+      <div className="enhanced-card bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/10">
+        <CardHeader className="border-b border-green-200 dark:border-green-800">
           <CardTitle>Financial Summary</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -351,7 +355,7 @@ export default function ReportsPage() {
             </p>
           </div>
         </CardContent>
-      </Card>
+      </div>
     </div>
   );
 }

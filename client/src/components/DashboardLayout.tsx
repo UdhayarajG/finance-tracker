@@ -161,21 +161,21 @@ function DashboardLayoutContent({
       <div className="relative" ref={sidebarRef}>
         <Sidebar
           collapsible="icon"
-          className="border-r-0"
+          className="border-r border-green-200 dark:border-green-800 bg-gradient-to-b from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/10"
           disableTransition={isResizing}
         >
-          <SidebarHeader className="h-16 justify-center">
+          <SidebarHeader className="h-16 justify-center border-b border-green-200 dark:border-green-800">
             <div className="flex items-center gap-3 px-2 transition-all w-full">
               <button
                 onClick={toggleSidebar}
-                className="h-8 w-8 flex items-center justify-center hover:bg-accent rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring shrink-0"
+                className="h-8 w-8 flex items-center justify-center hover:bg-green-200 dark:hover:bg-green-800 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 shrink-0"
                 aria-label="Toggle navigation"
               >
-                <PanelLeft className="h-4 w-4 text-muted-foreground" />
+                <PanelLeft className="h-4 w-4 text-green-700 dark:text-green-400" />
               </button>
               {!isCollapsed ? (
                 <div className="flex items-center gap-2 min-w-0">
-                  <span className="font-semibold tracking-tight truncate">
+                  <span className="font-semibold tracking-tight truncate text-green-900 dark:text-green-50">
                     Navigation
                   </span>
                 </div>
@@ -193,10 +193,16 @@ function DashboardLayoutContent({
                       isActive={isActive}
                       onClick={() => setLocation(item.path)}
                       tooltip={item.label}
-                      className={`h-10 transition-all font-normal`}
+                      className={`h-10 transition-all font-normal ${
+                        isActive
+                          ? "bg-green-200 dark:bg-green-800 text-green-900 dark:text-green-50"
+                          : "text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-800/50"
+                      }`}
                     >
                       <item.icon
-                        className={`h-4 w-4 ${isActive ? "text-primary" : ""}`}
+                        className={`h-4 w-4 ${
+                          isActive ? "text-green-600 dark:text-green-300" : ""
+                        }`}
                       />
                       <span>{item.label}</span>
                     </SidebarMenuButton>
@@ -206,20 +212,20 @@ function DashboardLayoutContent({
             </SidebarMenu>
           </SidebarContent>
 
-          <SidebarFooter className="p-3">
+          <SidebarFooter className="p-3 border-t border-green-200 dark:border-green-800">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-3 rounded-lg px-1 py-1 hover:bg-accent/50 transition-colors w-full text-left group-data-[collapsible=icon]:justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                  <Avatar className="h-9 w-9 border shrink-0">
-                    <AvatarFallback className="text-xs font-medium">
+                <button className="flex items-center gap-3 rounded-lg px-1 py-1 hover:bg-green-100 dark:hover:bg-green-800/50 transition-colors w-full text-left group-data-[collapsible=icon]:justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500">
+                  <Avatar className="h-9 w-9 border border-green-300 dark:border-green-700 shrink-0 bg-green-100 dark:bg-green-800">
+                    <AvatarFallback className="text-xs font-medium text-green-900 dark:text-green-50">
                       {user?.name?.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-                    <p className="text-sm font-medium truncate leading-none">
+                    <p className="text-sm font-medium truncate leading-none text-green-900 dark:text-green-50">
                       {user?.name || "-"}
                     </p>
-                    <p className="text-xs text-muted-foreground truncate mt-1.5">
+                    <p className="text-xs text-green-600 dark:text-green-400 truncate mt-1.5">
                       {user?.email || "-"}
                     </p>
                   </div>
