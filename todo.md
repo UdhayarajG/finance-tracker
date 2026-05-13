@@ -169,3 +169,15 @@
 - [x] Fix navigation bar layout and styling issues (fixed useAuth hook integration)
 - [x] Fix authentication routing issues (fixed useAuth property names)
 - [x] Test all pages and verify fixes (23 tests passing, TypeScript clean)
+
+
+## Phase 20: User Profile Management
+- [x] Update database schema to add avatar_url and profile fields
+- [x] Create backend API for updating user profile (name, avatar, email)
+- [x] Create backend API for avatar upload to S3 (placeholder with data URL)
+- [x] Build ProfilePage UI component with form
+- [x] Implement avatar upload with preview
+- [x] Add profile link to navigation/settings
+- [x] Add form validation and error handling
+- [x] Create profile update tests (23 tests passing)
+- [x] Test end-to-end profile updates (TypeScript clean, all tests passing)

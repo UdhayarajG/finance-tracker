@@ -13,6 +13,7 @@ import BudgetsPage from "./pages/BudgetsPage";
 import CategoriesPage from "./pages/CategoriesPage";
 import ReportsPage from "./pages/ReportsPage";
 import SettingsPage from "./pages/SettingsPage";
+import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
@@ -94,7 +95,14 @@ function Router() {
           </DashboardLayout>
         )}
       </Route>
-      <Route path={"/settings"}>
+      <Route path={"profile"}>
+        {() => (
+          <DashboardLayout>
+            <ProfilePage />
+          </DashboardLayout>
+        )}
+      </Route>
+      <Route path={"settings"}>
         {() => (
           <DashboardLayout>
             <SettingsPage />

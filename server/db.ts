@@ -724,3 +724,54 @@ export async function getCategoryBudgetStatus(categoryId: number, userId: number
     shouldAlert: percentageUsed >= (cat.budgetAlertThreshold || 80),
   };
 }
+
+
+/**
+ * Update user profile information
+ */
+export async function updateUserProfile(
+  userId: number,
+  data: {
+    name?: string;
+    avatarUrl?: string;
+    bio?: string;
+    email?: string;
+  }
+) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const updateData: Record<string, unknown> = {};
+  if (data.name !== undefined) updateData.name = data.name;
+  if (data.avatarUrl !== undefined) updateData.avatarUrl = data.avatarUrl;
+  if (data.bio !== undefined) updateData.bio = data.bio;
+  if (data.email !== undefined) updateData.email = data.email;
+  updateData.updatedAt = new Date();
+
+  const result = await db
+    .update(users)
+    .set(updateData)
+    .where(eq(users.id, userId));
+
+  return result;
+}
+
+/**
+ * Get user profile by ID
+ */
+export async function getUserProfile(userId: number) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const user = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+
+  return user[0] || null;
+}

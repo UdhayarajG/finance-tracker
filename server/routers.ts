@@ -85,6 +85,34 @@ export const appRouter = router({
           message: 'Password reset is not yet implemented.',
         });
       }),
+    updateProfile: protectedProcedure
+      .input(z.object({
+        name: z.string().min(1).optional(),
+        bio: z.string().max(500).optional(),
+        email: z.string().email().optional(),
+        avatarUrl: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        if (!ctx.user) {
+          throw new TRPCError({
+            code: 'UNAUTHORIZED',
+            message: 'User not authenticated',
+          });
+        }
+
+        await db.updateUserProfile(ctx.user.id, input);
+        const updatedUser = await db.getUserProfile(ctx.user.id);
+        return updatedUser;
+      }),
+    getProfile: protectedProcedure.query(async ({ ctx }) => {
+      if (!ctx.user) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'User not authenticated',
+        });
+      }
+      return await db.getUserProfile(ctx.user.id);
+    }),
   }),
 
   // ============= EXPENSE PROCEDURES =============

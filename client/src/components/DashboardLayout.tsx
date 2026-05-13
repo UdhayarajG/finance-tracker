@@ -35,6 +35,7 @@ const menuItems = [
   { icon: PieChart, label: "Budgets", path: "/budgets" },
   { icon: Tag, label: "Categories", path: "/categories" },
   { icon: LayoutDashboard, label: "Reports", path: "/reports" },
+  { icon: Users, label: "Profile", path: "/profile" },
   { icon: Settings, label: "Settings", path: "/settings" },
 ];
 
