@@ -1,4 +1,3 @@
-import { useAuth } from "@/_core/hooks/useAuth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -20,6 +19,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { getLoginUrl } from "@/const";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/hooks/useAuth";
 import { useIsMobile } from "@/hooks/useMobile";
 import { LayoutDashboard, LogOut, PanelLeft, Users, Wallet, Briefcase, PieChart, Settings, Tag } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
@@ -51,13 +52,13 @@ export default function DashboardLayout({
     const saved = localStorage.getItem(SIDEBAR_WIDTH_KEY);
     return saved ? parseInt(saved, 10) : DEFAULT_WIDTH;
   });
-  const { loading, user } = useAuth();
+  const { isLoading, user } = useAuth();
 
   useEffect(() => {
     localStorage.setItem(SIDEBAR_WIDTH_KEY, sidebarWidth.toString());
   }, [sidebarWidth]);
 
-  if (loading) {
+  if (isLoading) {
     return <DashboardLayoutSkeleton />
   }
 
@@ -111,7 +112,13 @@ function DashboardLayoutContent({
   children,
   setSidebarWidth,
 }: DashboardLayoutContentProps) {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
+  const logoutMutation = trpc.auth.logout.useMutation();
+  
+  const handleLogout = async () => {
+    await logoutMutation.mutateAsync();
+    window.location.href = getLoginUrl();
+  };
   const [location, setLocation] = useLocation();
   const { state, toggleSidebar } = useSidebar();
   const isCollapsed = state === "collapsed";
@@ -233,7 +240,7 @@ function DashboardLayoutContent({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="cursor-pointer text-destructive focus:text-destructive"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
